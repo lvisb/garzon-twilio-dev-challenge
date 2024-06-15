@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "es2022",
+
+    "strict": true,
+
+    // utils
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "rootDir": "src",
+    "baseUrl": ".",
+    "paths": {
+      "#common/*": ["src/common/*"],
+      "#env/*": ["src/env/*"],
+      "#*": ["src/*"]
+    },
+
+    // build
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true,
+    "incremental": false,
+    "skipLibCheck": true,
+
+    // code quality
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "strictNullChecks": false,
+
+    // others
+    "removeComments": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": false,
+    "noEmitOnError": false,
+    "jsx": "react-jsx"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
