@@ -38,6 +38,7 @@ export class UserService {
     user.settings.longitude = dto.longitude
     user.settings.horoscope = dto.horoscope
     user.settings.motivationalQuotes = dto.motivationalQuotes
+    user.timezone = dto.timezone
 
     return this.dbService.userRepo.save(user)
   }

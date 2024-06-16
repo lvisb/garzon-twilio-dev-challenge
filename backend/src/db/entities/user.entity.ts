@@ -14,6 +14,7 @@ export interface IUser {
   name: string
   email: string
   provider: string
+  timezone: string
   isActive: boolean
   birthDate?: Date
   createdAt: Date
@@ -60,6 +61,10 @@ export class User implements IUser {
     } as UserSettings,
   })
   settings: UserSettings
+
+  @Index()
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  timezone: string
 
   @Index()
   @Column({ type: 'boolean', default: true })

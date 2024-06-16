@@ -1,8 +1,10 @@
 import { FilterXSS } from '#common/transformers/filter-xss.transform.js'
+import { timezones } from '#common/utils/timezones.util.js'
 import { invalidField } from '#i18n/i18n.config.js'
 import { Expose, Type } from 'class-transformer'
 import {
   IsBoolean,
+  IsIn,
   IsLatitude,
   IsLongitude,
   IsNotEmpty,
@@ -42,4 +44,8 @@ export class UpdateUserDto {
   @IsBoolean({ message: invalidField })
   @Type(() => Boolean)
   motivationalQuotes: boolean
+
+  @Expose()
+  @IsIn(timezones, { message: invalidField })
+  timezone: string
 }
