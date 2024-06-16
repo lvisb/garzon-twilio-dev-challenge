@@ -17,6 +17,18 @@ export class Env {
   @Expose()
   @IsDefined()
   NODE_ENV: 'development' | 'production'
+
+  @Expose()
+  @IsDefined()
+  NYLAS_CLIENT_ID: string
+
+  @Expose()
+  @IsDefined()
+  NYLAS_API_KEY: string
+
+  @Expose()
+  @IsDefined()
+  NYLAS_API_URI: string
 }
 
 @Injectable()

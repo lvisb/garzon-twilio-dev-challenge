@@ -4,6 +4,13 @@
 /* prettier-ignore */
 import { Path } from "nestjs-i18n";
 /* prettier-ignore */
-export type I18nTranslations = {};
+export type I18nTranslations = {
+    "errors": {
+        "unknown_error": string;
+    };
+    "general": {
+        "token_retrieved": string;
+    };
+};
 /* prettier-ignore */
 export type I18nPath = Path<I18nTranslations>;

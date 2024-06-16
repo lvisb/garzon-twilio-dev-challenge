@@ -8,7 +8,7 @@ import {
 import { I18nPath } from '#common/types/i18n.types.js'
 
 export const I18nConfig = I18nModule.forRoot({
-  fallbackLanguage: 'pt',
+  fallbackLanguage: 'en',
   loaderOptions: {
     path: './src/i18n/',
     watch: true,
