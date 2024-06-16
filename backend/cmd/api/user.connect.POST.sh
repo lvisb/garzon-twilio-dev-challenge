@@ -5,6 +5,6 @@ source "./_vars.sh"
 code=$1
 
 http -f \
-  POST "$apiUrl/nylas/connect/token" \
+  POST "$apiUrl/user/connect" \
     code="$code" \
 

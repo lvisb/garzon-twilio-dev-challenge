@@ -1,10 +1,15 @@
 import { EnvService } from '#env/env.service.js'
 import { Injectable } from '@nestjs/common'
-import axios, { AxiosResponse } from 'axios'
+import { JwtService } from '@nestjs/jwt'
+import axios from 'axios'
+import { IdTokenDto } from './dto/id-token.dto.js'
 
 @Injectable()
 export class NylasService {
-  constructor(private readonly envService: EnvService) {}
+  constructor(
+    private readonly envService: EnvService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   get apiUrl() {
     return this.envService.getValue('NYLAS_API_URI') + '/v3'
@@ -27,5 +32,9 @@ export class NylasService {
         redirect_uri: 'http://localhost:8001',
       },
     )
+  }
+
+  extractTokenInfo(idToken: string) {
+    return this.jwtService.decode<IdTokenDto>(idToken)
   }
 }

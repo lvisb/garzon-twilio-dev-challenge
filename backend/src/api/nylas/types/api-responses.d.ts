@@ -15,6 +15,7 @@ declare namespace ApiResponses {
           token_type: string
           id_token: string
           grant_id: string
+          provider: string
         }
       }
     }
