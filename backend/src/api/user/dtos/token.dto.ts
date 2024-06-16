@@ -2,5 +2,5 @@ import { Expose } from "class-transformer";
 
 export class TokenDto {
   @Expose()
-  userId: string
+  sub: string
 }

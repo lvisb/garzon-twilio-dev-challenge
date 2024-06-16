@@ -21,4 +21,4 @@ export const I18nConfig = I18nModule.forRoot({
 export const i18n = (messageId: I18nPath, args: any = {}) =>
   i18nValidationMessage(messageId, { args })
 
-// export const invalidField = i18n('validation.invalid_field')
+export const invalidField = i18n('validation.invalid_field')

@@ -21,6 +21,14 @@ export interface IUser {
   deletedAt: Date
 }
 
+export interface UserSettings {
+  horoscope: boolean
+  weather: boolean
+  latitude: number
+  longitude: number
+  motivationalQuotes: boolean
+}
+
 @Entity({ name: 'users' })
 export class User implements IUser {
   @PrimaryGeneratedColumn('uuid')
@@ -40,6 +48,18 @@ export class User implements IUser {
   @Index()
   @Column({ type: 'varchar', length: 20 })
   provider: string
+
+  @Column({
+    type: 'jsonb',
+    default: {
+      horoscope: false,
+      weather: false,
+      latitude: 0,
+      longitude: 0,
+      motivationalQuotes: false,
+    } as UserSettings,
+  })
+  settings: UserSettings
 
   @Index()
   @Column({ type: 'boolean', default: true })

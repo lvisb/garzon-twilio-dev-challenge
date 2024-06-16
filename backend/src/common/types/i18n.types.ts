@@ -7,9 +7,13 @@ import { Path } from "nestjs-i18n";
 export type I18nTranslations = {
     "errors": {
         "unknown_error": string;
+        "invalid_token": string;
     };
     "general": {
         "token_retrieved": string;
+    };
+    "validation": {
+        "invalid_field": string;
     };
 };
 /* prettier-ignore */
