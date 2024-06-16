@@ -1,8 +1,9 @@
 import { DataSourceOptions, Table } from 'typeorm'
 import { NamingStrategyInterface } from 'typeorm/browser'
 import { snakeCase } from 'typeorm/util/StringUtils.js'
+import { User } from './entities/user.entity.js'
 
-export const entities: any[] = []
+export const entities = [User]
 
 export const preMigrations: any[] = []
 
