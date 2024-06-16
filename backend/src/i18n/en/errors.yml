@@ -1,2 +1,3 @@
 unknown_error: "An unknown error has occurred."
 invalid_token: "Invalid or expired token."
+user_events_fetch_error: "Failed to retrieve events."
