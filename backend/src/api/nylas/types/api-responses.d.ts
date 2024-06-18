@@ -95,6 +95,8 @@ declare namespace ApiResponses {
       }
 
       interface When {
+        start_date: string
+        end_date: string
         end_time: number
         end_timezone: string
         object: string

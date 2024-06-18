@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import axios, { Axios } from 'axios'
 import { IdTokenDto } from './dto/id-token.dto.js'
-import { endOfDay, getUnixTime, startOfDay } from 'date-fns'
+import { getUnixTime } from 'date-fns'
 
 @Injectable()
 export class NylasService {
@@ -47,14 +47,14 @@ export class NylasService {
     )
   }
 
-  calendarEvents(calendarId: string, grantId: string) {
+  calendarEvents(calendarId: string, grantId: string, start: Date, end: Date) {
     return this.axios.get<ApiResponses.Nylas.Events.Json>(
-      `/grants/${grantId}/events`,
+      `/grants/${grantId}/events?calendar_id=${calendarId}`,
       {
         params: {
-          calendar_id: calendarId,
-          start: getUnixTime(startOfDay(new Date())),
-          end: getUnixTime(endOfDay(new Date())),
+          start: getUnixTime(start),
+          end: getUnixTime(end),
+          expand_recurring: true,
         },
       },
     )
