@@ -22,7 +22,7 @@ export class NylasService {
   }
 
   token(code: string) {
-    return axios.post<ApiResponses.Nylas.Connect.Token.Json>(
+    return this.axios.post<ApiResponses.Nylas.Connect.Token.Json>(
       `/connect/token`,
       {
         client_id: this.envService.getValue('NYLAS_CLIENT_ID'),

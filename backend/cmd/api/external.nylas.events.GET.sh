@@ -8,5 +8,7 @@ http -f --verify=no \
   -A bearer -a "$nylasApiKey" \
   GET "$nylasApiUrl/grants/$grantId/events" \
     calendar_id==primary \
-    limit==5
+    expand_recurring==true \
+    start==1718668800 \
+    end==1718841599
 
