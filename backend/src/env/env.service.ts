@@ -33,6 +33,10 @@ export class Env {
   @Expose()
   @IsDefined()
   NYLAS_API_URI: string
+
+  @Expose()
+  @IsDefined()
+  OPENAI_API_KEY: string
 }
 
 @Injectable()
