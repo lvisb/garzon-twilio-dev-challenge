@@ -6,6 +6,7 @@ import { I18nConfig } from '#i18n/i18n.config.js'
 import { NylasModule } from '#api/nylas/nylas.module.js'
 import { UserModule } from '#api/user/user.module.js'
 import { OpenAiModule } from './api/openai/openai.module.js'
+import { TwilioModule } from '#twilio/twilio.module.js'
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { OpenAiModule } from './api/openai/openai.module.js'
     NylasModule,
     UserModule,
     OpenAiModule,
+    TwilioModule,
   ],
   controllers: [],
   providers: [],

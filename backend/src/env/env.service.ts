@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { ConfigService as NestConfigService } from '@nestjs/config'
 import { Expose, Type } from 'class-transformer'
-import { IsDefined, IsInt, Min } from 'class-validator'
+import { IsDefined, IsEmail, IsInt, Min } from 'class-validator'
 
 export class Env {
   @Expose()
@@ -37,6 +37,19 @@ export class Env {
   @Expose()
   @IsDefined()
   OPENAI_API_KEY: string
+
+  @Expose()
+  @IsDefined()
+  SENDGRID_API_KEY: string
+
+  @Expose()
+  @IsEmail()
+  @IsDefined()
+  EMAIL_FROM: string
+
+  @Expose()
+  @IsDefined()
+  EMAIL_FROM_NAME: string
 }
 
 @Injectable()
