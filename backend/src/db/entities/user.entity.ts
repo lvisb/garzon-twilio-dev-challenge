@@ -16,8 +16,8 @@ export interface IUser {
   provider: string
   timezone: string
   isActive: boolean
+  phoneActive?: boolean
   phone?: string
-  birthDate?: Date
   createdAt: Date
   updatedAt: Date
   deletedAt: Date
@@ -70,8 +70,12 @@ export class User implements IUser {
   isActive: boolean
 
   @Index()
-  @Column({ type: 'date', nullable: true })
-  birthDate: Date
+  @Column({ type: 'boolean', default: false })
+  phoneActive: boolean
+
+  @Index()
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  phone: string
 
   @Index()
   @CreateDateColumn({ type: 'timestamp with time zone' })

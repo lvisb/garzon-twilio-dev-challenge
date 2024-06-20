@@ -2,14 +2,17 @@
 
 source "./_vars.sh"
 
+phone="$1"
+
 http -f \
   -A bearer -a "$bearerToken" \
   PATCH "$apiUrl/user" \
     name="John" \
-    horoscope=true \
-    weather=true \
+    address="Av. 123" \
     latitude=0.000 \
     weatherLongitude=0.000 \
-    motivationalQuotes=true \
     timezone="America/Sao_Paulo" \
+    phoneActive=true \
+    phone="$phone" \
+    zodiacSign="Leo" \
 

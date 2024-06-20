@@ -23,11 +23,6 @@ export class UpdateUserDto {
   name: string
 
   @Expose()
-  @IsBoolean({ message: invalidField })
-  @Type(() => Boolean)
-  horoscope: boolean
-
-  @Expose()
   @FilterXSS()
   @IsOptional()
   address: string
@@ -47,6 +42,11 @@ export class UpdateUserDto {
   @Expose()
   @IsIn(timezones, { message: invalidField })
   timezone: string
+
+  @Expose()
+  @IsBoolean({ message: invalidField })
+  @Type(() => Boolean)
+  phoneActive: boolean
 
   @Expose()
   @IsPhoneNumber()

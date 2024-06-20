@@ -1,3 +1,5 @@
 unknown_error: "An unknown error has occurred."
 invalid_token: "Invalid or expired token."
 user_events_fetch_error: "Failed to retrieve events."
+verify_code_not_found: "The verification code has expired or does not exist."
+invalid_verify_code: "Invalid verification code."

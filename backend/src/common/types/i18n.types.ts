@@ -9,6 +9,8 @@ export type I18nTranslations = {
         "unknown_error": string;
         "invalid_token": string;
         "user_events_fetch_error": string;
+        "verify_code_not_found": string;
+        "invalid_verify_code": string;
     };
     "general": {
         "token_retrieved": string;
