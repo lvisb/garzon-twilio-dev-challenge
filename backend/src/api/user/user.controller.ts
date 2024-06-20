@@ -4,6 +4,7 @@ import {
   Get,
   Patch,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common'
@@ -23,6 +24,7 @@ import { VerifyService } from '#twilio/verify/verify.service.js'
 import { VerifyCodeNotFoundException } from '#common/exceptions/verify-code-not-found.exception.js'
 import { UnknownErrorException } from '#common/exceptions/unknown-error.exception.js'
 import { InvalidVerifyCodeException } from '#common/exceptions/invalid-verify-code.exception.js'
+import { FindAddressDto } from './dtos/find-address.dto.js'
 
 @Controller('api/user')
 export class UserController {
@@ -60,6 +62,26 @@ export class UserController {
       const token = this.service.generateToken(user)
 
       return HttpResponse.createBody({ token })
+    } catch (error) {
+      console.error(error)
+
+      throw new UnknownErrorException()
+    }
+  }
+
+  @UseGuards(UserGuard)
+  @Get('address')
+  async address(@Req() req: SignedInRequest, @Query() dto: FindAddressDto) {
+    try {
+      const addressResponse = await this.googleMapsService.address(dto.address)
+
+      return HttpResponse.createBody({
+        results: addressResponse.data.results.map((result) => ({
+          address: result.formatted_address,
+          latitude: result.geometry.location.lat,
+          longitude: result.geometry.location.lng,
+        })),
+      })
     } catch (error) {
       console.error(error)
 
