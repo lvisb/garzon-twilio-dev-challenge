@@ -51,6 +51,10 @@ export class Env {
   OPEN_WEATHER_API_URI: string
 
   @Expose()
+  @IsDefined()
+  GOOGLE_MAPS_API_KEY: string
+
+  @Expose()
   @IsEmail()
   @IsDefined()
   EMAIL_FROM: string

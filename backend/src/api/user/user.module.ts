@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt'
 import { JwtStrategy } from '#common/jwt.strategy.js'
 import { OpenAiService } from '#api/openai/openai.service.js'
 import { OpenWeatherService } from '#openweather/openweather.service.js'
+import { GoogleMapsService } from '#google-maps/google-maps.service.js'
 
 @Module({
   imports: [],
@@ -18,6 +19,7 @@ import { OpenWeatherService } from '#openweather/openweather.service.js'
     DbService,
     NylasService,
     OpenWeatherService,
+    GoogleMapsService,
     JwtService,
     JwtStrategy,
   ],
