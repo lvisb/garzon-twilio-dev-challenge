@@ -38,4 +38,34 @@ Instructions:
 
     return chatCompletion
   }
+
+  async weatherPrompt(weather: ApiResponses.OpenWeather.DailyItem) {
+    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      {
+        role: 'system',
+        content: `
+You're the assistant who summarizes the weather forecast in JSON format, presenting the day's forecast for a layperson interested in key highlights.
+
+Instructions:
+
+1. Receive the weather forecast in JSON format with technical data about the day's forecast. Note: Temperatures are provided in Kelvin and require conversion.
+2. Analyze all data and provide interesting metrics in a continuous text summary for a layperson with a tone that is friendly and possibly humorous, including the minimum and maximum temperatures in Fahrenheit and Celsius.
+3. Additionally, based on your analysis, choose one of these icons to describe the forecast: "clouds", "fog", "rain", "snow", "storm", "sunny-with-clouds-and-wind", "sunshine-storm", "sun-shower".
+4. Present the summary in JSON as summary.
+5. Present the icon in JSON as icon.`,
+      },
+      {
+        role: 'user',
+        content: `Here is the weather today:\n${JSON.stringify(weather)}`,
+      },
+    ]
+
+    const chatCompletion = await this.openai.chat.completions.create({
+      response_format: { type: 'json_object' },
+      model: 'gpt-3.5-turbo',
+      messages,
+    })
+
+    return chatCompletion
+  }
 }

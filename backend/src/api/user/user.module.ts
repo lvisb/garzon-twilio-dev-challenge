@@ -6,6 +6,8 @@ import { DbService } from '#db/db.service.js'
 import { NylasService } from '#api/nylas/nylas.service.js'
 import { JwtService } from '@nestjs/jwt'
 import { JwtStrategy } from '#common/jwt.strategy.js'
+import { OpenAiService } from '#api/openai/openai.service.js'
+import { OpenWeatherService } from '#openweather/openweather.service.js'
 
 @Module({
   imports: [],
@@ -15,6 +17,7 @@ import { JwtStrategy } from '#common/jwt.strategy.js'
     EnvService,
     DbService,
     NylasService,
+    OpenWeatherService,
     JwtService,
     JwtStrategy,
   ],

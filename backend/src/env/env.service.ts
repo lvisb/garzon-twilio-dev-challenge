@@ -43,6 +43,14 @@ export class Env {
   SENDGRID_API_KEY: string
 
   @Expose()
+  @IsDefined()
+  OPEN_WEATHER_API_KEY: string
+
+  @Expose()
+  @IsDefined()
+  OPEN_WEATHER_API_URI: string
+
+  @Expose()
   @IsEmail()
   @IsDefined()
   EMAIL_FROM: string
