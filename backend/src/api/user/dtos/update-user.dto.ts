@@ -28,6 +28,7 @@ export class UpdateUserDto {
   horoscope: boolean
 
   @Expose()
+  @FilterXSS()
   @IsOptional()
   address: string
 
