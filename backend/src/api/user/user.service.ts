@@ -40,7 +40,7 @@ export class UserService {
   updateUser(user: User, dto: UpdateUserDto) {
     if (dto.name) user.name = dto.name
 
-    user.settings.city = dto.city
+    user.settings.address = dto.address
     user.settings.latitude = dto.latitude
     user.settings.longitude = dto.longitude
     user.settings.zodiacSign = dto.zodiacSign

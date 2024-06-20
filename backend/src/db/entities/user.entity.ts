@@ -25,7 +25,7 @@ export interface IUser {
 
 export interface UserSettings {
   zodiacSign: string
-  city?: string
+  address?: string
   latitude: number
   longitude: number
 }
@@ -54,7 +54,7 @@ export class User implements IUser {
     type: 'jsonb',
     default: {
       zodiacSign: undefined,
-      city: undefined,
+      address: undefined,
       latitude: 0,
       longitude: 0,
     } as UserSettings,

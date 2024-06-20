@@ -29,7 +29,7 @@ export class UpdateUserDto {
 
   @Expose()
   @IsOptional()
-  city: string
+  address: string
 
   @Expose()
   @IsLatitude({ message: invalidField })
