@@ -25,6 +25,7 @@ import { VerifyCodeNotFoundException } from '#common/exceptions/verify-code-not-
 import { UnknownErrorException } from '#common/exceptions/unknown-error.exception.js'
 import { InvalidVerifyCodeException } from '#common/exceptions/invalid-verify-code.exception.js'
 import { FindAddressDto } from './dtos/find-address.dto.js'
+import { ConnectCodeDto } from './dtos/connect-code.dto.js'
 
 @Controller('api/user')
 export class UserController {
@@ -38,8 +39,13 @@ export class UserController {
     private readonly verifyService: VerifyService,
   ) {}
 
+  /**
+   * After connecting the account to the platform, Nylas redirects to the Callback 
+   * URI with a query code. With this code, we need to extract a grantId that 
+   * will allow us to retrieve calendar data.
+   */
   @Post('connect')
-  async connect(@Body() dto: CodeDto) {
+  async connect(@Body() dto: ConnectCodeDto) {
     const { code } = dto
 
     try {
@@ -55,6 +61,7 @@ export class UserController {
         user.email = info.email
         user.grantId = info.sub
         user.provider = result.data.provider
+        user.isActive = false
 
         await this.service.saveUser(user)
       }
@@ -69,6 +76,10 @@ export class UserController {
     }
   }
 
+  /**
+   * Endpoint to retrieve addresses with latitude and longitude in live search. 
+   * Used when the user starts filling in the address.
+   */
   @UseGuards(UserGuard)
   @Get('address')
   async address(@Req() req: SignedInRequest, @Query() dto: FindAddressDto) {
@@ -89,6 +100,11 @@ export class UserController {
     }
   }
 
+  /**
+   * Endpoint that verifies if the SMS code entered by the user is valid. 
+   * If valid, the user's phone number is updated in the database, allowing 
+   * them to proceed with the profile update on the frontend.
+   */
   @UseGuards(UserGuard)
   @Patch('verify-code')
   async verifyCode(@Req() req: SignedInRequest, @Body() dto: CodeDto) {
@@ -121,6 +137,12 @@ export class UserController {
     }
   }
 
+  /**
+   * Endpoint that updates the user's information. If the user's phone number is different 
+   * from the previous one, the user will be required to confirm that the phone number 
+   * belongs to them using a code received via SMS. After confirming the code and calling 
+   * this endpoint again, the data can be updated.
+   */
   @UseGuards(UserGuard)
   @Patch()
   async updateUser(@Req() req: SignedInRequest, @Body() dto: UpdateUserDto) {
@@ -137,6 +159,8 @@ export class UserController {
         throw new UnknownErrorException()
       }
     }
+
+    req.user.isActive = true
 
     await this.service.updateUser(req.user, dto)
 

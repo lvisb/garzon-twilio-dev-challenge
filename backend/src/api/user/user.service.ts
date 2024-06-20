@@ -23,7 +23,7 @@ export class UserService {
 
   loadUserById(userId: string) {
     return this.dbService.userRepo.findOne({
-      where: { userId, isActive: true },
+      where: { userId },
     })
   }
 
