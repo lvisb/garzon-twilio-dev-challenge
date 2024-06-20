@@ -62,6 +62,18 @@ export class Env {
   @Expose()
   @IsDefined()
   EMAIL_FROM_NAME: string
+
+  @Expose()
+  @IsDefined()
+  TWILIO_ACCOUNT_SID: string
+
+  @Expose()
+  @IsDefined()
+  TWILIO_AUTH_TOKEN: string
+
+  @Expose()
+  @IsDefined()
+  TWILIO_VERIFY_SID: string
 }
 
 @Injectable()
