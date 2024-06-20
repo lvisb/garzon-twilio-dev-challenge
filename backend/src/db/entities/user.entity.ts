@@ -16,6 +16,7 @@ export interface IUser {
   provider: string
   timezone: string
   isActive: boolean
+  phone?: string
   birthDate?: Date
   createdAt: Date
   updatedAt: Date
@@ -23,11 +24,10 @@ export interface IUser {
 }
 
 export interface UserSettings {
-  horoscope: boolean
-  weather: boolean
+  zodiacSign: string
+  city?: string
   latitude: number
   longitude: number
-  motivationalQuotes: boolean
 }
 
 @Entity({ name: 'users' })
@@ -53,11 +53,10 @@ export class User implements IUser {
   @Column({
     type: 'jsonb',
     default: {
-      horoscope: false,
-      weather: false,
+      zodiacSign: undefined,
+      city: undefined,
       latitude: 0,
       longitude: 0,
-      motivationalQuotes: false,
     } as UserSettings,
   })
   settings: UserSettings

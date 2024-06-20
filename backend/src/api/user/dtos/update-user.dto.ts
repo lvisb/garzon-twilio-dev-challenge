@@ -9,7 +9,11 @@ import {
   IsLongitude,
   IsNotEmpty,
   IsOptional,
+  IsPhoneNumber,
 } from 'class-validator'
+import { ZodiacSign } from '#common/utils/zodiac-signs.util.js'
+
+const zodiacValues = Object.values(ZodiacSign)
 
 export class UpdateUserDto {
   @Expose()
@@ -24,9 +28,8 @@ export class UpdateUserDto {
   horoscope: boolean
 
   @Expose()
-  @IsBoolean({ message: invalidField })
-  @Type(() => Boolean)
-  weather: boolean
+  @IsOptional()
+  city: string
 
   @Expose()
   @IsLatitude({ message: invalidField })
@@ -41,11 +44,14 @@ export class UpdateUserDto {
   longitude: number
 
   @Expose()
-  @IsBoolean({ message: invalidField })
-  @Type(() => Boolean)
-  motivationalQuotes: boolean
-
-  @Expose()
   @IsIn(timezones, { message: invalidField })
   timezone: string
+
+  @Expose()
+  @IsPhoneNumber()
+  phone: string
+
+  @Expose()
+  @IsIn(zodiacValues, { message: invalidField })
+  zodiacSign: string
 }

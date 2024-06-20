@@ -8,6 +8,8 @@ import { UpdateUserDto } from './dtos/update-user.dto.js'
 import { NylasService } from '#api/nylas/nylas.service.js'
 import { UserEventsFetchException } from '#common/exceptions/user-events.exception.js'
 import { AxiosError } from 'axios'
+import { OpenAiService } from '#api/openai/openai.service.js'
+import { parseISO } from 'date-fns'
 
 @Injectable()
 export class UserService {
@@ -16,6 +18,7 @@ export class UserService {
     private readonly jwtService: JwtService,
     private readonly envService: EnvService,
     private readonly nylasService: NylasService,
+    private readonly openAiService: OpenAiService,
   ) {}
 
   loadUserById(userId: string) {
@@ -37,11 +40,10 @@ export class UserService {
   updateUser(user: User, dto: UpdateUserDto) {
     if (dto.name) user.name = dto.name
 
-    user.settings.weather = dto.weather
+    user.settings.city = dto.city
     user.settings.latitude = dto.latitude
     user.settings.longitude = dto.longitude
-    user.settings.horoscope = dto.horoscope
-    user.settings.motivationalQuotes = dto.motivationalQuotes
+    user.settings.zodiacSign = dto.zodiacSign
     user.timezone = dto.timezone
 
     return this.dbService.userRepo.save(user)
@@ -57,7 +59,7 @@ export class UserService {
     })
   }
 
-  async events(user: User) {
+  async events(user: User, startDate: Date, endDate: Date) {
     const evs: ApiResponses.Nylas.Events.EventItem[] = []
 
     try {
@@ -68,6 +70,8 @@ export class UserService {
           const ev = await this.nylasService.calendarEvents(
             calendar.id,
             user.grantId,
+            startDate,
+            endDate,
           )
 
           evs.push(...ev.data.data)
@@ -81,5 +85,7 @@ export class UserService {
 
       throw new UserEventsFetchException()
     }
+
+    return evs
   }
 }
