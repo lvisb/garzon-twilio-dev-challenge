@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -69,7 +70,6 @@ export class UserController {
       throw new UnknownErrorException()
     }
   }
-
   /**
    * Endpoint to retrieve addresses with latitude and longitude in live search.
    * Used when the user starts filling in the address.
@@ -161,14 +161,32 @@ export class UserController {
     return HttpResponse.createBody({})
   }
 
+  @UseGuards(UserGuard)
+  @Delete()
+  async deleteUser(@Req() req: SignedInRequest) {
+    const user = req.user
+
+    try {
+      await this.nylasService.deleteGrant(user.grantId)
+
+      await this.service.deleteUser(user)
+    } catch (error) {
+      console.log(error)
+
+      throw new UnknownErrorException()
+    }
+
+    return HttpResponse.createBody({})
+  }
+
   // @UseGuards(UserGuard)
   // @Get()
   // async dailyResume(@Req() req: SignedInRequest) {
-    // const events = await this.dailySummary.events(req.user)
-    // console.log(events)
-    // const weather = await this.dailySummary.weather(req.user)
-    // console.log(weather)
-    // const horoscope = await this.dailySummary.horoscope(req.user)
-    // console.log(horoscope)
+  // const events = await this.dailySummary.events(req.user)
+  // console.log(events)
+  // const weather = await this.dailySummary.weather(req.user)
+  // console.log(weather)
+  // const horoscope = await this.dailySummary.horoscope(req.user)
+  // console.log(horoscope)
   // }
 }

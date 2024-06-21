@@ -36,7 +36,7 @@ export class User implements IUser {
   userId: string
 
   @Index()
-  @Column({ type: 'uuid' })
+  @Column({ type: 'uuid', nullable: true })
   grantId: string
 
   @Column({ type: 'varchar', length: 100, default: '' })

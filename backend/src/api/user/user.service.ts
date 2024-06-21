@@ -90,4 +90,19 @@ export class UserService {
 
     return evs
   }
+
+  async deleteUser(user: User) {
+    user.isActive = false
+    user.grantId = null
+    user.email = 'DELETED'
+    user.name = 'DELETED'
+    user.settings.address = undefined
+    user.settings.latitude = 0
+    user.settings.longitude = 0
+    user.phoneActive = false
+    user.phone = null
+
+    await this.dbService.userRepo.save(user)
+    await this.dbService.userRepo.softDelete({ userId: user.userId })
+  }
 }

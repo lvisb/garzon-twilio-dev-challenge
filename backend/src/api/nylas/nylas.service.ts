@@ -57,4 +57,8 @@ export class NylasService {
       },
     )
   }
+
+  deleteGrant(grantId: string) {
+    return this.axios.delete(`/grants/${grantId}`)
+  }
 }
