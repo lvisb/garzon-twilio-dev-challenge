@@ -51,6 +51,17 @@ export class UserService {
     return this.dbService.userRepo.save(user)
   }
 
+  getUsersWithinTimeRange(startTime: string = '06:00:00', endTime: string = '06:00:00') {
+    return this.dbService.userRepo
+      .createQueryBuilder('user')
+      .where(
+        `(now() AT TIME ZONE user.timezone)::time BETWEEN 
+                (time '${startTime}' - interval '10 minutes') AND 
+                (time '${endTime}' + interval '10 minutes')`,
+      )
+      .getMany()
+  }
+
   generateToken(user: User) {
     const { userId } = user
 

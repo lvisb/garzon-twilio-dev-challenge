@@ -20,6 +20,10 @@ export class Env {
 
   @Expose()
   @IsDefined()
+  JWT_ADMIN_SECRET: string
+
+  @Expose()
+  @IsDefined()
   NODE_ENV: 'development' | 'production'
 
   @Expose()

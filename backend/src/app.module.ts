@@ -7,6 +7,7 @@ import { NylasModule } from '#api/nylas/nylas.module.js'
 import { UserModule } from '#api/user/user.module.js'
 import { OpenAiModule } from './api/openai/openai.module.js'
 import { TwilioModule } from '#twilio/twilio.module.js'
+import { DailySummaryModule } from '#api/daily-summary/daily-summary.module.js'
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TwilioModule } from '#twilio/twilio.module.js'
     UserModule,
     OpenAiModule,
     TwilioModule,
+    DailySummaryModule,
   ],
   controllers: [],
   providers: [],

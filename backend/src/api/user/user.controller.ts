@@ -178,15 +178,4 @@ export class UserController {
 
     return HttpResponse.createBody({})
   }
-
-  // @UseGuards(UserGuard)
-  // @Get()
-  // async dailyResume(@Req() req: SignedInRequest) {
-  // const events = await this.dailySummary.events(req.user)
-  // console.log(events)
-  // const weather = await this.dailySummary.weather(req.user)
-  // console.log(weather)
-  // const horoscope = await this.dailySummary.horoscope(req.user)
-  // console.log(horoscope)
-  // }
 }

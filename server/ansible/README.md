@@ -14,6 +14,7 @@ nylas_api_key: ""
 nylas_api_uri: "https://api.us.nylas.com"
 
 jwt_secret: ""
+jwt_admin_secret: ""
 
 openai_api_key: ""
 
