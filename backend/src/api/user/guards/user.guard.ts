@@ -1,11 +1,11 @@
 import { InvalidTokenException } from '#common/exceptions/invalid-token.exception.js'
-import { JwtStrategyName } from '#common/jwt.strategy.js'
 import { SignedInRequest } from '#common/utils/signed-in-request.util.js'
 import { ExecutionContext, Injectable } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
+import { UserStrategyName } from '../user.strategy.js'
 
 @Injectable()
-export class UserGuard extends AuthGuard(JwtStrategyName) {
+export class UserGuard extends AuthGuard(UserStrategyName) {
   async canActivate(context: ExecutionContext) {
     // verifica na superclass se o token é válido 
     // @see #admin/api/auth/strategies/jwt.strategy.js

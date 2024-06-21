@@ -5,10 +5,10 @@ import { ExtractJwt, Strategy } from 'passport-jwt'
 import { UserService } from '#api/user/user.service.js'
 import { TokenDto } from '#api/user/dtos/token.dto.js'
 
-export const JwtStrategyName = 'jwt'
+export const UserStrategyName = 'UserStrategy'
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy, JwtStrategyName) {
+export class UserStrategy extends PassportStrategy(Strategy, UserStrategyName) {
   constructor(
     protected readonly envService: EnvService,
     private readonly usersService: UserService,
