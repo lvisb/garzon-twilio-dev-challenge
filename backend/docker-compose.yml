@@ -1,0 +1,34 @@
+services:
+  garzon_website_backend:
+    user: '${DOCKER_USER}:${DOCKER_USER_UID}'
+    image: garzon_website_backend:1.0.0
+    container_name: garzon_website_backend
+    networks:
+      - garzon-webserver-network
+    build:
+      context: ./
+      args:
+        DOCKER_USER: ${DOCKER_USER}
+        DOCKER_USER_UID: ${DOCKER_USER_UID}
+        DOCKER_GROUP: ${DOCKER_GROUP}
+        DOCKER_GROUP_GID: ${DOCKER_GROUP_GID}
+      dockerfile: Dockerfile
+    logging:
+      options:
+        max-size: '10m'
+        max-file: '5'
+    env_file:
+      - .env
+    volumes:
+      - '/etc/passwd:/etc/passwd:ro'
+      - '/etc/group:/etc/group:ro'
+    #expose:
+    #  - "${BACKEND_PORT}"
+    ports:
+      - '${BACKEND_PORT}:${BACKEND_PORT}'
+    restart: unless-stopped
+
+# network config
+networks:
+  garzon-webserver-network:
+    external: true

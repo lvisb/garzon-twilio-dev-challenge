@@ -1,0 +1,42 @@
+- name: create dir
+  ansible.builtin.file:
+    path: "{{ garzon_root }}"
+    owner: "{{ user_admin }}"
+    group: "{{ user_admin }}"
+    state: directory
+
+- name: copy src to server
+  ansible.posix.synchronize:
+    src: "{{ local_dir }}/backend/"
+    dest: "{{ garzon_root }}/backend/"
+    delete: yes
+    recursive: yes
+    archive: no
+    rsync_opts:
+      - "--include=Dockerfile"
+      - "--include=docker-compose.yml"
+      - "--include=src"
+      - "--include=src/**"
+      - "--include=package*.json"
+      - "--include=tsconfig*"
+      - "--include=nest*"
+      - "--exclude=*"
+      - "--no-motd"
+  become: true
+  become_user: "{{ user_admin }}"
+
+- name: env
+  template:
+    src: "templates/env.j2"
+    owner: "{{ user_admin }}"
+    group: "{{ user_admin }}"
+    dest: "{{ garzon_root }}/backend/.env"
+
+- name: build docker-compose
+  ansible.builtin.shell:
+    executable: /bin/bash
+    chdir: "{{ garzon_root }}/backend"
+    cmd: |
+      source .env && export $(sed '/^#/d' '.env' | cut -d= -f1)
+      docker compose -f docker-compose.yml --env-file .env up -d --build --force-recreate 
+      docker image prune -f
