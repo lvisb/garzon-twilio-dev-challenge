@@ -16,9 +16,6 @@ import { User } from '#db/entities/user.entity.js'
 import { UpdateUserDto } from './dtos/update-user.dto.js'
 import { UserGuard } from './guards/user.guard.js'
 import { SignedInRequest } from '#common/utils/signed-in-request.util.js'
-import { OpenAiService } from '#api/openai/openai.service.js'
-import { SendGridService } from '#twilio/sendgrid/sendgrid.service.js'
-import { OpenWeatherService } from '#openweather/openweather.service.js'
 import { GoogleMapsService } from '#google-maps/google-maps.service.js'
 import { VerifyService } from '#twilio/verify/verify.service.js'
 import { VerifyCodeNotFoundException } from '#common/exceptions/verify-code-not-found.exception.js'
@@ -26,24 +23,19 @@ import { UnknownErrorException } from '#common/exceptions/unknown-error.exceptio
 import { InvalidVerifyCodeException } from '#common/exceptions/invalid-verify-code.exception.js'
 import { FindAddressDto } from './dtos/find-address.dto.js'
 import { ConnectCodeDto } from './dtos/connect-code.dto.js'
-import { AstrologyService } from '#astrology/astrology.service.js'
 
 @Controller('api/user')
 export class UserController {
   constructor(
     private readonly service: UserService,
     private readonly nylasService: NylasService,
-    private readonly openaiService: OpenAiService,
-    private readonly sendGridService: SendGridService,
-    private readonly openWeatherService: OpenWeatherService,
     private readonly googleMapsService: GoogleMapsService,
     private readonly verifyService: VerifyService,
-    private readonly astrologyService: AstrologyService,
   ) {}
 
   /**
-   * After connecting the account to the platform, Nylas redirects to the Callback 
-   * URI with a query code. With this code, we need to extract a grantId that 
+   * After connecting the account to the platform, Nylas redirects to the Callback
+   * URI with a query code. With this code, we need to extract a grantId that
    * will allow us to retrieve calendar data.
    */
   @Post('connect')
@@ -79,7 +71,7 @@ export class UserController {
   }
 
   /**
-   * Endpoint to retrieve addresses with latitude and longitude in live search. 
+   * Endpoint to retrieve addresses with latitude and longitude in live search.
    * Used when the user starts filling in the address.
    */
   @UseGuards(UserGuard)
@@ -103,8 +95,8 @@ export class UserController {
   }
 
   /**
-   * Endpoint that verifies if the SMS code entered by the user is valid. 
-   * If valid, the user's phone number is updated in the database, allowing 
+   * Endpoint that verifies if the SMS code entered by the user is valid.
+   * If valid, the user's phone number is updated in the database, allowing
    * them to proceed with the profile update on the frontend.
    */
   @UseGuards(UserGuard)
@@ -140,9 +132,9 @@ export class UserController {
   }
 
   /**
-   * Endpoint that updates the user's information. If the user's phone number is different 
-   * from the previous one, the user will be required to confirm that the phone number 
-   * belongs to them using a code received via SMS. After confirming the code and calling 
+   * Endpoint that updates the user's information. If the user's phone number is different
+   * from the previous one, the user will be required to confirm that the phone number
+   * belongs to them using a code received via SMS. After confirming the code and calling
    * this endpoint again, the data can be updated.
    */
   @UseGuards(UserGuard)
@@ -168,4 +160,15 @@ export class UserController {
 
     return HttpResponse.createBody({})
   }
+
+  // @UseGuards(UserGuard)
+  // @Get()
+  // async dailyResume(@Req() req: SignedInRequest) {
+    // const events = await this.dailySummary.events(req.user)
+    // console.log(events)
+    // const weather = await this.dailySummary.weather(req.user)
+    // console.log(weather)
+    // const horoscope = await this.dailySummary.horoscope(req.user)
+    // console.log(horoscope)
+  // }
 }

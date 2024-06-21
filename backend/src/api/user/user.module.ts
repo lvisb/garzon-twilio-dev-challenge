@@ -10,6 +10,7 @@ import { OpenAiService } from '#api/openai/openai.service.js'
 import { OpenWeatherService } from '#openweather/openweather.service.js'
 import { GoogleMapsService } from '#google-maps/google-maps.service.js'
 import { AstrologyService } from '#astrology/astrology.service.js'
+import { DailySummaryService } from '#daily-summary/daily-summary.service.js'
 
 @Module({
   imports: [],
@@ -22,6 +23,7 @@ import { AstrologyService } from '#astrology/astrology.service.js'
     OpenWeatherService,
     GoogleMapsService,
     AstrologyService,
+    DailySummaryService,
     JwtService,
     JwtStrategy,
   ],
