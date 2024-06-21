@@ -4,7 +4,7 @@ source "./_vars.sh"
 
 address="$1"
 
-http -f \
+http -f --verify=no \
   -A bearer -a "$bearerToken" \
-  GET "$apiUrl/user/address" \
+  GET "$apiRemoteUrl/user/address" \
     address=="$1" \

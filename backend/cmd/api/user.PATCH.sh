@@ -4,11 +4,11 @@ source "./_vars.sh"
 
 phone="$1"
 
-http -f \
+http -f --verify=no \
   -A bearer -a "$bearerToken" \
-  PATCH "$apiUrl/user" \
+  PATCH "$apiRemoteUrl/user" \
     name="John" \
-    address="Av. 123" \
+    address="Lorem Ipsum Dolor" \
     latitude=0.000 \
     weatherLongitude=0.000 \
     timezone="America/Sao_Paulo" \

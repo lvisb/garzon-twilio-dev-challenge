@@ -4,7 +4,7 @@ source "./_vars.sh"
 
 code=$1
 
-http -f \
-  POST "$apiUrl/user/connect" \
+http -f --verify=no \
+  POST "$apiRemoteUrl/user/connect" \
     code="$code" \
 
