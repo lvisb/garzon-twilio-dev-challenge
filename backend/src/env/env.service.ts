@@ -36,6 +36,10 @@ export class Env {
 
   @Expose()
   @IsDefined()
+  NYLAS_REDIRECT_URI: string
+
+  @Expose()
+  @IsDefined()
   OPENAI_API_KEY: string
 
   @Expose()

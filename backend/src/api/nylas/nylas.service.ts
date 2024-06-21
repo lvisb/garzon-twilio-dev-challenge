@@ -29,11 +29,9 @@ export class NylasService {
         client_secret: this.envService.getValue('NYLAS_API_KEY'),
         grant_type: 'authorization_code',
         code,
-        redirect_uri: 'http://localhost:8001',
+        redirect_uri: this.envService.getValue('NYLAS_REDIRECT_URI'),
       },
-      {
-        headers: null,
-      },
+      { headers: null },
     )
   }
 
