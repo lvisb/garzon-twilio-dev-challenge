@@ -1,0 +1,48 @@
+###
+### Install Docker and Docker Compose
+###
+
+- name: "install-docker : os codename"
+  set_fact:
+    codename: "{{ ansible_distribution_release }}"
+
+- name: "install_docker : add docker gpg apt key"
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+  become: true
+
+- name: "install_docker : add docker repository"
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ codename }} stable"
+    state: present
+  become: true
+
+- name: "install-docker : install docker engine"
+  apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: latest
+    update_cache: true
+  become: true
+
+- name: "install_docker : docker auto init"
+  command: systemctl enable docker.service
+  become: true
+
+- name: "install_docker : containerd auto init"
+  command: systemctl enable containerd.service
+  become: true
+
+- name: "install_docker : lazydocker"
+  ansible.builtin.shell:
+    executable: /bin/bash
+    chdir: "/tmp"
+    cmd: |
+      export DIR=/usr/bin
+      curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash
+  become: true

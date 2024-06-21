@@ -1,0 +1,21 @@
+user_admin: admin
+user_admin_uid: 1000
+
+user_nginx: nginx
+user_nginx_uid: 1001
+
+www_dir: /srv/www
+nginx_dir: /srv/nginx
+permission_dir: 0775
+permission_file: 0754
+
+garzon_server_ip: "{{ ansible_host }}"
+garzon_hostname: "migarzon.online"
+
+garzon_root: /srv/www/migarzon.online
+garzon_ssl_dir: /srv/www/migarzon.online/ssl
+
+garzon_backend_port: 8001
+garzon_internal_address: "http://garzon_website_backend:{{ garzon_website_backend_port }}"
+garzon_external_address: "https://{{ garzon_hostname }}"
+garzon_backend_cors: "https://{{ ansible_host }},https://{{ garzon_hostname }},http://{{ ansible_host }},http://{{ garzon_hostname }}"

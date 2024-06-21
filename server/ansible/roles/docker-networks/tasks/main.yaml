@@ -1,0 +1,11 @@
+- name: create webserver network
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: |
+      docker network create -d bridge garzon-webserver-network
+  register: result
+  changed_when:
+    - '"already exists" in result.stderr'
+  failed_when:
+    - '"already exists" not in result.stderr and result.stderr != ""'
+  become: true

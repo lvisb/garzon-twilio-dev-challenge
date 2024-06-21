@@ -1,0 +1,25 @@
+- name: "install : aptitude"
+  apt:
+    name: aptitude
+    state: latest
+    update_cache: true
+  become: true
+
+- name: "install : required system packages"
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - gnupg
+      - rsync
+    state: latest
+  become: true
+
+- name: "install : zsh"
+  apt:
+    name: zsh
+    state: latest
+  become: true
+

@@ -1,0 +1,31 @@
+services:
+  # nginx
+  garzon_nginx:
+    image: nginx:1.27-alpine3.19
+    container_name: garzon_nginx
+    restart: always
+    networks:
+      - garzon-webserver-network
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "5"
+    env_file:
+      - .env
+    volumes:
+      - "./templates:/etc/nginx/templates"
+      - "./conf.d/cache.location.conf:/etc/nginx/conf.d/cache.location.conf:ro"
+      - "./conf.d/headers.server.conf:/etc/nginx/conf.d/headers.server.conf:ro"
+      - "./conf.d/performance.http.conf:/etc/nginx/conf.d/performance.http.conf:ro"
+      - "./conf.d/proxy-headers.server.conf:/etc/nginx/conf.d/proxy-headers.server.conf:ro"
+      - "./conf.d/ssl.server.conf:/etc/nginx/conf.d/ssl.server.conf:ro"
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+      - "/etc/passwd:/etc/passwd:ro"
+    ports:
+      - "80:80"
+      - "443:443"
+
+# network config
+networks:
+  garzon-webserver-network:
+    external: true

@@ -1,0 +1,13 @@
+- name: "vimrc"
+  ansible.builtin.copy:
+    dest: "/home/{{ item }}/.vimrc"
+    content: |
+      syntax on
+      set number
+      set tabstop=2
+      set shiftwidth=2
+      set expandtab
+    owner: "{{ item }}"
+  with_items:
+    - "{{ user_admin }}"
+  become: true

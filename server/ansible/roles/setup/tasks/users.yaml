@@ -1,0 +1,9 @@
+- name: "users : create nginx user"
+  ansible.builtin.user:
+    uid: "{{ user_nginx_uid }}"
+    name: "{{ user_nginx }}"
+    create_home: false
+    shell: /usr/sbin/nologin
+    system: true
+    state: present
+  become: true

@@ -1,0 +1,34 @@
+- name: create dir
+  ansible.builtin.file:
+    path: "{{ nginx_dir }}"
+    owner: "{{ user_nginx }}"
+    group: "{{ user_nginx }}"
+    state: directory
+
+- name: copy files to server
+  ansible.posix.synchronize:
+    src: "./files/"
+    dest: "{{ nginx_dir }}/"
+    delete: yes
+    recursive: yes
+    archive: no
+    rsync_opts:
+      - "--no-motd"
+  become: true
+  become_user: "{{ user_nginx }}"
+
+- name: env
+  template:
+    src: "templates/env.j2"
+    owner: "{{ user_nginx }}"
+    group: "{{ user_nginx }}"
+    dest: "{{ nginx_dir }}/.env"
+
+- name: build docker-compose
+  ansible.builtin.shell:
+    executable: /bin/bash
+    chdir: "{{ nginx_dir }}"
+    cmd: |
+      source .env && export $(sed '/^#/d' '.env' | cut -d= -f1)
+      docker compose -f docker-compose.yml --env-file .env up -d --build --force-recreate 
+      docker image prune -f

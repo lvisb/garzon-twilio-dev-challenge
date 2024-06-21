@@ -1,0 +1,5 @@
+- name: website backend env
+  template: 
+    src: "{{ playbook_dir }}/roles/website-backend/templates/env.j2"
+    dest: "{{ playbook_dir }}/../../backend/.env"
+

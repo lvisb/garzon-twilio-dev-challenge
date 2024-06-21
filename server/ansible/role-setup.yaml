@@ -1,0 +1,20 @@
+###
+### Opcional: Atualiza os pacotes instalados
+###
+
+- hosts: all
+  gather_facts: true
+  vars_files:
+    - vars/secrets.yaml
+    - vars/users.yaml
+    - vars/general.yaml
+    - vars/garzon.yaml
+  vars_prompt:
+    - name: "update_type"
+      prompt: "should update packages? (dist, full, no, safe, yes)"
+      private: false
+      default: yes
+  roles:
+    - setup
+
+

@@ -1,0 +1,11 @@
+- hosts: localhost
+  gather_facts: false
+  vars:
+    node_env: development
+  vars_files:
+    - vars/secrets.yaml
+    - vars/garzon.yaml
+  roles:
+    - local-env
+
+
