@@ -5,6 +5,14 @@
     group: "{{ user_nginx }}"
     state: directory
 
+- name: create certbot dir
+  ansible.builtin.file:
+    path: "{{ garzon_root }}/static_files/certbot"
+    owner: "{{ user_admin }}"
+    group: "{{ user_admin }}"
+    mode: "{{ permission_dir }}"
+    state: directory
+
 - name: copy files to server
   ansible.posix.synchronize:
     src: "./files/"
