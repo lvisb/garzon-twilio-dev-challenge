@@ -9,6 +9,7 @@ import { JwtStrategy } from '#common/jwt.strategy.js'
 import { OpenAiService } from '#api/openai/openai.service.js'
 import { OpenWeatherService } from '#openweather/openweather.service.js'
 import { GoogleMapsService } from '#google-maps/google-maps.service.js'
+import { AstrologyService } from '#astrology/astrology.service.js'
 
 @Module({
   imports: [],
@@ -20,6 +21,7 @@ import { GoogleMapsService } from '#google-maps/google-maps.service.js'
     NylasService,
     OpenWeatherService,
     GoogleMapsService,
+    AstrologyService,
     JwtService,
     JwtStrategy,
   ],

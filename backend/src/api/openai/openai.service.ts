@@ -68,4 +68,31 @@ Instructions:
 
     return chatCompletion
   }
+
+  async horoscopePrompt(horoscopeForecast: string) {
+    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      {
+        role: 'system',
+        content: `
+You are an astrologer who will receive the user's daily horoscope text and craft a warm and friendly summary in JSON format.
+
+Instructions:
+
+1. Rewrite certain parts of the provided horoscope text using different terms to create a new, engaging summary.
+2. Present this summary in JSON under the key summary.`,
+      },
+      {
+        role: 'user',
+        content: `Here is my daily horoscope forecast:\n${horoscopeForecast}`,
+      },
+    ]
+
+    const chatCompletion = await this.openai.chat.completions.create({
+      response_format: { type: 'json_object' },
+      model: 'gpt-3.5-turbo',
+      messages,
+    })
+
+    return chatCompletion
+  }
 }

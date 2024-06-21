@@ -26,6 +26,7 @@ import { UnknownErrorException } from '#common/exceptions/unknown-error.exceptio
 import { InvalidVerifyCodeException } from '#common/exceptions/invalid-verify-code.exception.js'
 import { FindAddressDto } from './dtos/find-address.dto.js'
 import { ConnectCodeDto } from './dtos/connect-code.dto.js'
+import { AstrologyService } from '#astrology/astrology.service.js'
 
 @Controller('api/user')
 export class UserController {
@@ -37,6 +38,7 @@ export class UserController {
     private readonly openWeatherService: OpenWeatherService,
     private readonly googleMapsService: GoogleMapsService,
     private readonly verifyService: VerifyService,
+    private readonly astrologyService: AstrologyService,
   ) {}
 
   /**
