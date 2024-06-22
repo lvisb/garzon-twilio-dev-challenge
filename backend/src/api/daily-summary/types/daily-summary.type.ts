@@ -6,9 +6,18 @@ export namespace DailySummary {
   }
 
   export namespace Events {
+    export interface CalendarEvent {
+      title: string
+
+      startDate: string
+
+      endDate: string
+    }
+
     export interface Json {
       summary: string
       motivational_quote: string
+      events: CalendarEvent[]
     }
   }
 

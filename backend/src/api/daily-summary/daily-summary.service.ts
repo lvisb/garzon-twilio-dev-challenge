@@ -56,6 +56,8 @@ export class DailySummaryService {
         content.choices[0].message.content,
       )
 
+      messageJson.events = promptEvents
+
       return messageJson
     } catch (error) {
       console.error('events', error)
