@@ -24,6 +24,9 @@ import { UnknownErrorException } from '#common/exceptions/unknown-error.exceptio
 import { InvalidVerifyCodeException } from '#common/exceptions/invalid-verify-code.exception.js'
 import { FindAddressDto } from './dtos/find-address.dto.js'
 import { ConnectCodeDto } from './dtos/connect-code.dto.js'
+import { AxiosError } from 'axios'
+import { GrantInvalidException } from '#common/exceptions/grant-invalid.exception.js'
+import { consoleError } from '#common/utils/console-error.util.js'
 
 @Controller('api/user')
 export class UserController {
@@ -65,7 +68,15 @@ export class UserController {
 
       return HttpResponse.createBody({ token })
     } catch (error) {
-      console.error(error)
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 400) {
+          if (error.response.data.error === 'invalid_grant') {
+            throw new GrantInvalidException()
+          }
+        }
+      }
+
+      consoleError(error)
 
       throw new UnknownErrorException()
     }
@@ -88,7 +99,7 @@ export class UserController {
         })),
       })
     } catch (error) {
-      console.error(error)
+      consoleError(error)
 
       throw new UnknownErrorException()
     }
@@ -125,7 +136,7 @@ export class UserController {
           throw new VerifyCodeNotFoundException()
       }
 
-      console.error(error)
+      consoleError(error)
 
       throw new UnknownErrorException()
     }
@@ -148,7 +159,7 @@ export class UserController {
 
         return HttpResponse.createBody({ id: 'code_sent' })
       } catch (error) {
-        console.error(error)
+      consoleError(error)
 
         throw new UnknownErrorException()
       }
@@ -171,7 +182,7 @@ export class UserController {
 
       await this.service.deleteUser(user)
     } catch (error) {
-      console.log(error)
+      consoleError(error)
 
       throw new UnknownErrorException()
     }

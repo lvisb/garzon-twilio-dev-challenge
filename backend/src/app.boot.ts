@@ -57,7 +57,10 @@ export class App {
     // cors
     this.app.enableCors({
       origin: [
-        // ...env().WEBSITE_BACKEND_CORS?.split(',')
+        ...this.app
+          .get<EnvService>(EnvService)
+          .getValue<string>('BACKEND_CORS')
+          .split(','),
       ],
     })
 
@@ -89,7 +92,7 @@ export class App {
    * de textos.
    * Uso: App.i18nService.translate(...)
    *
-   * @returns {I18nService}
+   * @returns {I18nService)
    */
   static get i18nService(): I18nService {
     return App.instance.app.get<I18nService>(I18nService)

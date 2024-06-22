@@ -12,6 +12,7 @@ export type I18nTranslations = {
         "verify_code_not_found": string;
         "invalid_verify_code": string;
         "sendmail_error": string;
+        "grant_invalid": string;
     };
     "general": {
         "token_retrieved": string;

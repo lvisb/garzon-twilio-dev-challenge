@@ -86,6 +86,10 @@ export class Env {
   @Expose()
   @IsDefined()
   GARZON_EXTERNAL_ADDRESS: string
+
+  @Expose()
+  @IsDefined()
+  BACKEND_CORS: string
 }
 
 @Injectable()
