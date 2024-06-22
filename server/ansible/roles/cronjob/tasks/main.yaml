@@ -10,7 +10,7 @@
       bash -c '
       payload="{\"sub\": \"admin\"}";
       token=$(jwt encode "$payload" --secret "{{ jwt_admin_secret }}");
-      echo "$(date "+%Y-%m-%d %H:%M:%S")" >> /home/{{ user_admin }}/daily-summary.log;
+      echo -e "\n$(date "+\%Y-\%m-\%d \%H:\%M:\%S")" >> /home/{{ user_admin }}/daily-summary.log;
       curl -X POST https://{{ garzon_hostname }}/api/_private/daily-summary -H "Authorization: Bearer $token" >> /home/{{ user_admin }}/daily-summary.log 2>&1 && echo -e "\n" >> /home/{{ user_admin }}/daily-summary.log;
       '
     user: "{{ user_admin }}"
