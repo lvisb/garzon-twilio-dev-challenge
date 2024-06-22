@@ -9,7 +9,7 @@ import { NylasService } from '#api/nylas/nylas.service.js'
 import { UserEventsFetchException } from '#common/exceptions/user-events.exception.js'
 import { AxiosError } from 'axios'
 import { OpenAiService } from '#api/openai/openai.service.js'
-import { parseISO } from 'date-fns'
+import { formatDate, parseISO, subHours } from 'date-fns'
 
 @Injectable()
 export class UserService {
@@ -51,13 +51,27 @@ export class UserService {
     return this.dbService.userRepo.save(user)
   }
 
-  getUsersWithinTimeRange(startTime: string = '06:00:00', endTime: string = '06:00:00') {
+  getUsersWithinTimeRange(
+    startTime: string = '06:00:00',
+    endTime: string = '06:00:00',
+  ) {
+    const hoursAgo = subHours(new Date(), 24)
+
+    const subQuery = this.dbService.sendHistoryRepo
+      .createQueryBuilder('send_history')
+      .select('DISTINCT(user_id)')
+      .where(
+        `send_history.createdAt >= '${formatDate(hoursAgo, 'yyyy-MM-dd HH:mm:ss')}'`,
+      )
+      .getQuery()
+
     return this.dbService.userRepo
       .createQueryBuilder('user')
       .where(
         `(now() AT TIME ZONE user.timezone)::time BETWEEN 
                 (time '${startTime}' - interval '10 minutes') AND 
-                (time '${endTime}' + interval '10 minutes')`,
+                (time '${endTime}' + interval '10 minutes')
+         AND user.user_id NOT IN (${subQuery})`,
       )
       .getMany()
   }
