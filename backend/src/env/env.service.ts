@@ -82,6 +82,10 @@ export class Env {
   @Expose()
   @IsDefined()
   TWILIO_VERIFY_SID: string
+
+  @Expose()
+  @IsDefined()
+  GARZON_EXTERNAL_ADDRESS: string
 }
 
 @Injectable()

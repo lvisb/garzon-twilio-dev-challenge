@@ -51,7 +51,8 @@ const Email = ({
   },
   horoscopeJson = {
     zodiacSign: 'capricorn',
-    summary: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus.',
+    summary:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus.',
   },
   name = 'Lorem Ipsum Dolor',
 }: EmailProps) => {
@@ -99,12 +100,11 @@ const Email = ({
           <Column
             align="center"
             style={{
-              fontSize: 26,
+              fontSize: 20,
               lineHeight: 1.5,
             }}
-          >
-            {eventsJson.summary}
-          </Column>
+            dangerouslySetInnerHTML={{ __html: eventsJson.summary }}
+          />
         </Row>
       </Section>
 

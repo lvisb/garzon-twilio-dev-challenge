@@ -6,6 +6,30 @@ import { EventItem } from './types/event-item.type.js'
 export class OpenAiService {
   constructor(@Inject('OpenAiProvider') private readonly openai: OpenAI) {}
 
+  async motivationalQuotePrompt() {
+    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      {
+        role: 'system',
+        content: `
+You are a motivating and positive assistant that generates a motivational phrase.
+
+Instructions:
+
+1.  Include a famous and unique motivational phrase to inspire the user, ensuring it is upbeat and optimistic, and avoid being repetitive.
+2.  Format the response in JSON format, containing the property motivational_quote.
+`,
+      },
+    ]
+
+    const chatCompletion = await this.openai.chat.completions.create({
+      response_format: { type: 'json_object' },
+      model: 'gpt-3.5-turbo',
+      messages,
+    })
+
+    return chatCompletion
+  }
+
   async eventsPrompt(events: EventItem[]) {
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
@@ -20,10 +44,9 @@ Instructions:
 3. If an event lasts 24 hours, simply mention 'All day' instead of specifying hours.
 4. Omit approximately 30% of events that do not seem important based on your analysis.
 5. Ensure the text is formatted as a continuous block of text without using bullet points or lists.
-6. If there are no events in the user's schedule, inform in the summary property a warm and laid-back manner that their schedule is free.
-7. Maintain a friendly and human-like tone throughout the summary, offering unique phrases to avoid repetition.
-8. Include a famous and unique motivational phrase to inspire the user, ensuring it is upbeat and optimistic, and avoid being repetitive.
-9. Format the response in JSON format, containing properties summary and motivational_quote.`,
+6. Maintain a friendly and human-like tone throughout the summary, offering unique phrases to avoid repetition.
+7. Include a famous and unique motivational phrase to inspire the user, ensuring it is upbeat and optimistic, and avoid being repetitive.
+8. Format the response in JSON format, containing properties summary and motivational_quote.`,
       },
       {
         role: 'user',

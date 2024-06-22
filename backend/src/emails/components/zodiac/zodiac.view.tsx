@@ -29,7 +29,7 @@ export const Zodiac = ({ assetsUrl, data }: ZodiacProps) => {
       <Row>
         <Column width={100} valign="middle">
           <Img
-            src={`${assetsUrl}/zodiac/${data.zodiacSign}.png`}
+            src={`${assetsUrl}/zodiac/${data.zodiacSign.toLowerCase()}.png`}
             width={100}
             height={100}
             alt={`${data.zodiacSign} by Freepik - flaticon.com`}
@@ -52,7 +52,7 @@ export const Zodiac = ({ assetsUrl, data }: ZodiacProps) => {
 
           <Text
             style={{
-              fontSize: 22,
+              fontSize: 16,
               lineHeight: 1.5,
             }}
           >

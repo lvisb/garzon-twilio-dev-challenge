@@ -11,6 +11,7 @@ export type I18nTranslations = {
         "user_events_fetch_error": string;
         "verify_code_not_found": string;
         "invalid_verify_code": string;
+        "sendmail_error": string;
     };
     "general": {
         "token_retrieved": string;

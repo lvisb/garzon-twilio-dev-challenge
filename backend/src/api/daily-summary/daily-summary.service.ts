@@ -5,11 +5,17 @@ import { AstrologyService } from '#astrology/astrology.service.js'
 import { User } from '#db/entities/user.entity.js'
 import { OpenWeatherService } from '#openweather/openweather.service.js'
 import { Injectable } from '@nestjs/common'
-import { fromUnixTime, set, toDate } from 'date-fns'
+import { format, fromUnixTime, set, toDate } from 'date-fns'
 import { DailySummary } from './types/daily-summary.type.js'
 import { ZodiacSign } from '#common/utils/zodiac-signs.util.js'
 import { DbService } from '#db/db.service.js'
-import { SendHistory, SendHistoryStatus } from '#db/entities/send-history.entity.js'
+import {
+  SendHistory,
+  SendHistoryStatus,
+} from '#db/entities/send-history.entity.js'
+import { render } from '@react-email/render'
+import DailySummaryEmail from '#emails/templates/daily-summary.js'
+import { EnvService } from '#env/env.service.js'
 
 @Injectable()
 export class DailySummaryService {
@@ -19,6 +25,7 @@ export class DailySummaryService {
     private readonly openaiService: OpenAiService,
     private readonly openWeatherService: OpenWeatherService,
     private readonly astrologyService: AstrologyService,
+    private readonly envService: EnvService,
   ) {}
 
   async events(user: User): Promise<DailySummary.Events.Json | undefined> {
@@ -30,11 +37,11 @@ export class DailySummaryService {
 
     const promptEvents: EventItem[] = events.map((event) => {
       const startDate = event.when.start_time
-        ? fromUnixTime(event.when.start_time).toString()
+        ? format(fromUnixTime(event.when.start_time), 'yyyy-MM-dd HH:mm:ss')
         : event.when.start_date
 
       const endDate = event.when.end_time
-        ? fromUnixTime(event.when.end_time).toString()
+        ? format(fromUnixTime(event.when.end_time), 'yyyy-MM-dd HH:mm:ss')
         : event.when.end_date
 
       return {
@@ -45,8 +52,13 @@ export class DailySummaryService {
     })
 
     if (promptEvents.length === 0) {
-      console.log('No events found', user.userId)
-      return undefined
+      const content = await this.openaiService.motivationalQuotePrompt()
+
+      return {
+        events: [],
+        motivational_quote: JSON.parse(content.choices[0].message.content).motivational_quote,
+        summary: "You don't have any events scheduled for today.",
+      }
     }
 
     const content = await this.openaiService.eventsPrompt(promptEvents)
@@ -139,4 +151,34 @@ export class DailySummaryService {
   updateSendHistory(sendHistory: SendHistory) {
     return this.dbService.sendHistoryRepo.save(sendHistory)
   }
+
+  renderEmail({
+    user,
+    eventsJson,
+    weatherJson,
+    horoscopeJson,
+  }: RenderEmailParams) {
+    const html = render(
+      DailySummaryEmail({
+        assetsUrl:
+          this.envService.getValue('GARZON_EXTERNAL_ADDRESS') + '/email',
+        eventsJson,
+        horoscopeJson,
+        weatherJson,
+        name: user.name,
+        appUrl: this.envService.getValue('GARZON_EXTERNAL_ADDRESS'),
+        appTitle: 'Gárzon',
+        timezone: user.timezone,
+      }),
+    )
+
+    return html
+  }
+}
+
+type RenderEmailParams = {
+  user: User
+  eventsJson: DailySummary.Events.Json
+  weatherJson: DailySummary.Weather.Json
+  horoscopeJson: DailySummary.Horoscope.Json
 }

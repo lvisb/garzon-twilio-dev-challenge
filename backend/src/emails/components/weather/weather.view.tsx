@@ -35,7 +35,7 @@ export const Weather = ({ assetsUrl, data }: WeatherProps) => {
 
         <Column width={36} />
 
-        <Column valign="middle" style={{ fontSize: '22px', lineHeight: 1.5 }}>
+        <Column valign="middle" style={{ fontSize: '16px', lineHeight: 1.5 }}>
           {data.summary}
         </Column>
       </Row>
