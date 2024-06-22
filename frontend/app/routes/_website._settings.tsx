@@ -1,4 +1,4 @@
-import { Outlet } from '@remix-run/react'
+import { Outlet, useLoaderData } from '@remix-run/react'
 import { SettingsLayout } from '~/layout/settings-layout/settings-layout.view'
 
 const Settings = () => {

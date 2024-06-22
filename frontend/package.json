@@ -21,8 +21,12 @@
     "@remix-run/node": "^2.9.2",
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
+    "@types/qs": "^6.9.15",
+    "axios": "^1.7.2",
+    "class-transformer": "^0.5.1",
     "clsx": "^2.1.1",
     "isbot": "^4.1.0",
+    "qs": "^6.12.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.3.0"
