@@ -1,0 +1,9 @@
+- hosts: all
+  gather_facts: false
+  vars_files:
+    - vars/secrets.yaml
+    - vars/garzon.yaml
+  roles:
+    - cronjob
+
+

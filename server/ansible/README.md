@@ -65,3 +65,9 @@ This role writes the .env file to the local backend folder. Therefore, whenever 
 ```bash
 ansible-playbook role-local-env.yaml
 ```
+
+### Deploy backend
+
+```bash
+ansible-playbook role-website-backend.yaml
+```

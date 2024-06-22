@@ -1,0 +1,17 @@
+- name: setup daily summary cron job
+  ansible.builtin.cron:
+    name: "daily summary every 30 min"
+    hour: "*"
+    day: "*"
+    month: "*"
+    weekday: "*"
+    minute: "*/30"
+    job: >
+      bash -c '
+      payload="{\"sub\": \"admin\"}";
+      token=$(jwt encode "$payload" --secret "{{ jwt_admin_secret }}");
+      echo "$(date "+%Y-%m-%d %H:%M:%S")" >> /home/{{ user_admin }}/daily-summary.log;
+      curl -X POST https://{{ garzon_hostname }}/api/_private/daily-summary -H "Authorization: Bearer $token" >> /home/{{ user_admin }}/daily-summary.log 2>&1 && echo -e "\n" >> /home/{{ user_admin }}/daily-summary.log;
+      '
+    user: "{{ user_admin }}"
+    state: present

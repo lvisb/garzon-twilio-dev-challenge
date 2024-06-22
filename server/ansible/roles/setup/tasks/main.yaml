@@ -7,6 +7,9 @@
 - name: "install_docker.yaml"
   import_tasks: "install_docker.yaml"
 
+- name: "install_jwt.yaml"
+  import_tasks: "install_jwt.yaml"
+
 - name: "users.yaml"
   import_tasks: "users.yaml"
 

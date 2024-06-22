@@ -1,0 +1,27 @@
+- name: "install-jwt : download release from github"
+  get_url:
+    url: "https://github.com/mike-engel/jwt-cli/releases/download/6.1.0/jwt-linux.tar.gz"
+    dest: "/tmp/jwt-linux.tar.gz"
+  become: yes
+
+- name: "install-jwt : extract the tar.gz file"
+  unarchive:
+    src: "/tmp/jwt-linux.tar.gz"
+    dest: "/tmp/"
+    remote_src: yes
+  become: yes
+
+- name: "install-jwt : change permissions of the extracted file"
+  file:
+    path: "/tmp/jwt"
+    owner: 'root'
+    group: 'root'
+  become: yes
+
+- name: "install-jwt : move the file to /usr/local/bin"
+  copy:
+    src: "/tmp/jwt"
+    dest: "/usr/bin/jwt"
+    remote_src: yes
+    mode: '0755'
+  become: yes
