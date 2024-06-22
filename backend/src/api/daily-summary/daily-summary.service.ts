@@ -8,10 +8,13 @@ import { Injectable } from '@nestjs/common'
 import { fromUnixTime, set, toDate } from 'date-fns'
 import { DailySummary } from './types/daily-summary.type.js'
 import { ZodiacSign } from '#common/utils/zodiac-signs.util.js'
+import { DbService } from '#db/db.service.js'
+import { SendHistory, SendHistoryStatus } from '#db/entities/send-history.entity.js'
 
 @Injectable()
 export class DailySummaryService {
   constructor(
+    private readonly dbService: DbService,
     private readonly service: UserService,
     private readonly openaiService: OpenAiService,
     private readonly openWeatherService: OpenWeatherService,
@@ -119,5 +122,19 @@ export class DailySummaryService {
 
       return undefined
     }
+  }
+
+  createSendHistory(user: User) {
+    const sendHistory = new SendHistory()
+
+    sendHistory.user = user
+    sendHistory.status = SendHistoryStatus.PENDING
+    sendHistory.timezone = user.timezone
+
+    return this.dbService.sendHistoryRepo.save(sendHistory)
+  }
+
+  updateSendHistory(sendHistory: SendHistory) {
+    return this.dbService.sendHistoryRepo.save(sendHistory)
   }
 }

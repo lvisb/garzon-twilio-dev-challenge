@@ -2,8 +2,9 @@ import { DataSourceOptions, Table } from 'typeorm'
 import { NamingStrategyInterface } from 'typeorm/browser'
 import { snakeCase } from 'typeorm/util/StringUtils.js'
 import { User } from './entities/user.entity.js'
+import { SendHistory } from './entities/send-history.entity.js'
 
-export const entities = [User]
+export const entities = [User, SendHistory]
 
 export const preMigrations: any[] = []
 

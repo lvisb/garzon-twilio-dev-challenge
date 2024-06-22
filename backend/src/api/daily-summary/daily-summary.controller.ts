@@ -15,17 +15,24 @@ export class DailySummaryController {
   @Post()
   async dailySummary() {
     const users = await this.userService.getUsersWithinTimeRange(
-      '10:00:00',
-      '17:00:00',
+      '06:00:00',
+      '06:00:00',
     )
 
     for (const user of users) {
+      const sendHistory = await this.service.createSendHistory(user)
+
       Promise.all([
         this.service.events(user),
         this.service.weather(user),
         this.service.horoscope(user),
-      ]).then((results) => {
-        console.log(user, results)
+      ]).then(async (results) => {
+        sendHistory.completedAt = new Date()
+        sendHistory.status = 'completed'
+        sendHistory.ellapsedTime =
+          sendHistory.completedAt.getTime() - sendHistory.createdAt.getTime()
+
+        await this.service.updateSendHistory(sendHistory)
       })
     }
 
