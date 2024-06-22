@@ -13,7 +13,7 @@ garzon_server_ip: "{{ ansible_host }}"
 garzon_hostname: "migarzon.online"
 
 garzon_root: /srv/www/migarzon.online
-garzon_ssl_dir: /srv/www/migarzon.online/ssl
+garzon_static_files: "{{ garzon_root }}/static_files"
 
 garzon_backend_port: 8001
 garzon_internal_address: "http://garzon_website_backend:{{ garzon_website_backend_port }}"

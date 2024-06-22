@@ -21,7 +21,7 @@ services:
       - "./conf.d/ssl.server.conf:/etc/nginx/conf.d/ssl.server.conf:ro"
       - "./nginx.conf:/etc/nginx/nginx.conf"
       - "/etc/passwd:/etc/passwd:ro"
-      - "${GARZON_ROOT}/static_files/certbot/:${GARZON_ROOT}/static_files/certbot/:ro"
+      - "${GARZON_ROOT}/static_files/:${GARZON_ROOT}/static_files/:ro"
       - "/etc/letsencrypt:/etc/letsencrypt"
     ports:
       - "80:80"

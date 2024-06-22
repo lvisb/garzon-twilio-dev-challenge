@@ -1,0 +1,19 @@
+- name: create dir
+  ansible.builtin.file:
+    path: "{{ garzon_root }}/static_files"
+    owner: "{{ user_admin }}"
+    group: "{{ user_admin }}"
+    mode: "{{ permission_dir }}"
+    state: directory
+
+- name: copy files to server
+  ansible.posix.synchronize:
+    src: "./files/"
+    dest: "{{ garzon_root }}/static_files"
+    recursive: yes
+    archive: no
+    rsync_opts:
+      - "--no-motd"
+  become: true
+  become_user: "{{ user_admin }}"
+

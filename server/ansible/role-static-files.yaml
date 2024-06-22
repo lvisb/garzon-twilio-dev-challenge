@@ -1,0 +1,8 @@
+- hosts: all
+  gather_facts: false
+  vars_files:
+    - vars/garzon.yaml
+  roles:
+    - static-files
+
+

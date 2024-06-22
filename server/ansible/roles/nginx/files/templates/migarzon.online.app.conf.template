@@ -47,12 +47,26 @@ server {
 	location /.well-known {
 		root ${GARZON_ROOT}/static_files/certbot;
 
-		# informa configurações de cache para arquivos estáticos
+    # cache configuration
 		include /etc/nginx/conf.d/cache.location.conf;
 
 		try_files
 			$request_uri
       =404;
+	}
+  
+	# location for static files
+	location / {
+		root ${GARZON_STATIC_FILES};
+
+    # cache configuration
+		include /etc/nginx/conf.d/cache.location.conf;
+
+    # 1. tries to load static files in the /static_files/ folder
+    # 2. forwards to the front-end server
+		try_files
+			$request_uri =404;
+      # @garzon_website_frontend;
 	}
 
 	# location for the backend api
