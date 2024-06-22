@@ -1,0 +1,7 @@
+- name: create dir
+  ansible.builtin.file:
+    path: "{{ garzon_root }}"
+    owner: "{{ user_admin }}"
+    group: "{{ user_admin }}"
+    state: directory
+

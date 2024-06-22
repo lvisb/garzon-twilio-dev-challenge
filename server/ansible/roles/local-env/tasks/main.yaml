@@ -3,3 +3,8 @@
     src: "{{ playbook_dir }}/roles/website-backend/templates/env.j2"
     dest: "{{ playbook_dir }}/../../backend/.env"
 
+- name: website frontend env
+  template: 
+    src: "{{ playbook_dir }}/roles/website-frontend/templates/env.j2"
+    dest: "{{ playbook_dir }}/../../frontend/.env"
+
