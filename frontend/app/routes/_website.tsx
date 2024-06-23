@@ -1,4 +1,4 @@
-import { Outlet } from '@remix-run/react'
+import { Outlet, json } from '@remix-run/react'
 import { WebsiteLayout } from '~/layout/website-layout/website-layout.layout'
 import { useGlobalDialogStore } from '~/common/global-dialog.store'
 import {

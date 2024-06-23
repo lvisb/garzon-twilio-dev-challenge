@@ -39,6 +39,18 @@ export class UserController {
     private readonly dailySummaryService: DailySummaryService,
   ) {}
 
+  private userResponse(user: User) {
+    return {
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      phoneActive: user.phoneActive,
+      isActive: user.isActive,
+      settings: user.settings,
+      timezone: user.timezone,
+    }
+  }
+
   /**
    * After connecting the account to the platform, Nylas redirects to the Callback
    * URI with a query code. With this code, we need to extract a grantId that
@@ -68,7 +80,7 @@ export class UserController {
 
       const token = this.service.generateToken(user)
 
-      return HttpResponse.createBody({ token })
+      return HttpResponse.createBody({ token, user: this.userResponse(user) })
     } catch (error) {
       if (error instanceof AxiosError) {
         if (error.response?.status === 400) {
@@ -88,15 +100,7 @@ export class UserController {
   @Get()
   async getUser(@Req() req: SignedInRequest) {
     return HttpResponse.createBody({
-      user: {
-        name: req.user.name,
-        email: req.user.email,
-        phone: req.user.phone,
-        phoneActive: req.user.phoneActive,
-        isActive: req.user.isActive,
-        settings: req.user.settings,
-        timezone: req.user.timezone,
-      },
+      user: this.userResponse(req.user),
     })
   }
 
@@ -190,7 +194,7 @@ export class UserController {
 
     await this.service.updateUser(req.user, dto)
 
-    if(recentlyActivated) this.dailySummaryService.prepareAndSend(req.user)
+    if (recentlyActivated) this.dailySummaryService.prepareAndSend(req.user)
 
     return HttpResponse.createBody({ recentlyActivated })
   }

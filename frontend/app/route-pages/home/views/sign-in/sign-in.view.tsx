@@ -1,6 +1,6 @@
 import { Apple, Google, Microsoft } from '@mui/icons-material'
 import { SignInButton } from '../sign-in-button/sign-in-button.view'
-import { useLoaderData,  } from '@remix-run/react'
+import { useLoaderData } from '@remix-run/react'
 
 export const SignIn = () => {
   const data = useLoaderData() as any
@@ -17,8 +17,22 @@ export const SignIn = () => {
       >
         Sign in with Google
       </SignInButton>
-      <SignInButton icon={<Apple />}>Sign in with Apple</SignInButton>
-      <SignInButton icon={<Microsoft />}>Sign in with Microsoft</SignInButton>
+      <SignInButton
+        icon={<Apple />}
+        onClick={() =>
+          (window.location.href = `${baseButtonUrl}&provider=icloud`)
+        }
+      >
+        Sign in with Apple
+      </SignInButton>
+      <SignInButton
+        icon={<Microsoft />}
+        onClick={() =>
+          (window.location.href = `${baseButtonUrl}&provider=microsoft`)
+        }
+      >
+        Sign in with Microsoft
+      </SignInButton>
     </div>
   )
 }

@@ -29,7 +29,7 @@ export class UserService {
 
   loadUserByEmail(email: string) {
     return this.dbService.userRepo.findOne({
-      where: { email, isActive: true },
+      where: { email },
     })
   }
 

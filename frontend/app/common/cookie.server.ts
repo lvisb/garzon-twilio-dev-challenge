@@ -28,7 +28,7 @@ export const cookieOptions = (args: {
 }
 
 export const cookieExpireDate = (rememberUser = false) => {
-  return rememberUser ? expiresInHours(720) : null
+  return expiresInHours(720)
 }
 
 export const readCookieSettings = async (remixArgs: LoaderFunctionArgs) => {

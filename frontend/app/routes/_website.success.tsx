@@ -3,9 +3,9 @@ import {
   type LoaderFunctionArgs,
   type MetaFunction,
 } from '@remix-run/node'
-import { authLoader, getCookie } from '~/common/auto-loader.server'
+import { getCookie } from '~/common/auto-loader.server'
 import { GLOBALS } from '~/common/config/globals.config'
-import { destroySession, getSession } from '~/common/cookie.server'
+import { CookieKeys, destroySession, getSession } from '~/common/cookie.server'
 import { SettingsLayout } from '~/layout/settings-layout/settings-layout.view'
 import { SettingsApiServer } from '~/route-pages/settings/services/settings.server'
 import { SuccessView } from '~/route-pages/success/success.view'
@@ -16,9 +16,9 @@ export const meta: MetaFunction = () => {
 }
 
 export const loader = async (remixArgs: LoaderFunctionArgs) => {
-  const { token } = await authLoader(remixArgs)
-  const { request } = remixArgs
+  const request = remixArgs.request
   const cookie = await getCookie(request)
+  const token = cookie.get(CookieKeys.token)
 
   const service = new SettingsApiServer({ token })
 
@@ -33,6 +33,8 @@ export const loader = async (remixArgs: LoaderFunctionArgs) => {
       },
     })
   }
+
+  if (!userJson.user.isActive) return redirect('/settings')
 
   return {
     userJson,

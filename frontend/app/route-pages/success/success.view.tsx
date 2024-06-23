@@ -4,7 +4,6 @@ import { useLoaderData, useNavigate } from '@remix-run/react'
 export const SuccessView = () => {
   const navigate = useNavigate()
   const { userJson, recentlyActivated } = useLoaderData() as any
-  console.log(useLoaderData())
 
   return (
     <div className="text-center">

@@ -70,7 +70,6 @@ const SettingsForm = () => {
   useFormFeedback(actionData)
 
   useEffect(() => {
-    console.log('codeVerified', codeVerified)
     if (codeVerified) {
       navigate({ search: '' }, { replace: true })
 

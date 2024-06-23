@@ -6,7 +6,7 @@ import {
 } from '@remix-run/node'
 import { Expose, plainToInstance } from 'class-transformer'
 import qs from 'qs'
-import { authLoader, getCookie } from '~/common/auto-loader.server'
+import { getCookie } from '~/common/auto-loader.server'
 import { envServer } from '~/common/config/env.server'
 import { GLOBALS } from '~/common/config/globals.config'
 import {
@@ -34,8 +34,9 @@ class CodeDto {
 }
 
 export const action: ActionFunction = async (remixArgs) => {
-  const { request, params } = remixArgs
-  const { token } = await authLoader(remixArgs)
+  const { request } = remixArgs
+  const cookie = await getCookie(request)
+  const token = cookie.get(CookieKeys.token)
 
   const service = new SettingsApiServer({ token })
   const rawData: any = qs.parse(await request.text())
@@ -72,9 +73,9 @@ export const action: ActionFunction = async (remixArgs) => {
 }
 
 export const loader = async (remixArgs: LoaderFunctionArgs) => {
-  const { token } = await authLoader(remixArgs)
   const { request } = remixArgs
   const cookie = await getCookie(request)
+  const token = cookie.get(CookieKeys.token)
 
   // api para dados de permissão do usuário
   const service = new SettingsApiServer({ token })
