@@ -206,7 +206,11 @@ export class UserController {
 
     try {
       await this.nylasService.deleteGrant(user.grantId)
+    } catch (error) {
+      consoleError(error)
+    }
 
+    try {
       await this.service.deleteUser(user)
     } catch (error) {
       consoleError(error)

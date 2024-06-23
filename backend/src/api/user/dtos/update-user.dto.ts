@@ -13,6 +13,7 @@ import {
   IsPhoneNumber,
 } from 'class-validator'
 import { ZodiacSign } from '#common/utils/zodiac-signs.util.js'
+import { OptionalPhoneNumber } from '../validators/optional-phone-number.validator.js'
 
 const zodiacValues = Object.values(ZodiacSign)
 
@@ -50,7 +51,7 @@ export class UpdateUserDto {
   phoneActive: boolean
 
   @Expose()
-  @IsPhoneNumber()
+  @OptionalPhoneNumber('phoneActive', { message: invalidField })
   phone: string
 
   @Expose()
