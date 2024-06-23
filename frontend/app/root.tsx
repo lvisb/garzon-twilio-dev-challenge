@@ -105,6 +105,7 @@ const Document = withEmotionCache(
             name="emotion-insertion-point"
             content="emotion-insertion-point"
           />
+          <script src="/scripts/libs/inputmask.min.js"></script>
         </head>
         <body className="bg-[linear-gradient(67deg,#2bd2ff,#8c4580)]">
           {children}

@@ -1,4 +1,15 @@
-import { createTheme } from '@mui/material'
+import { PaletteColor, PaletteColorOptions, createTheme } from '@mui/material'
+
+declare module '@mui/material/styles' {
+  // allow configuration using `createTheme`
+  interface PaletteOptions {
+    bgRequired?: PaletteColorOptions
+  }
+
+  interface Palette {
+    bgRequired: PaletteColor
+  }
+}
 
 export const theme = createTheme({
   palette: {
@@ -12,6 +23,12 @@ export const theme = createTheme({
     },
     text: {
       primary: '#000',
+    },
+    bgRequired: {
+      main: '#F4F4F4',
+      dark: '#C6C6C6',
+      light: '#FFFFFF',
+      contrastText: '#000',
     },
   },
   typography: {
