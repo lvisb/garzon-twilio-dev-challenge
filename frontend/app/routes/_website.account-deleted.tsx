@@ -1,13 +1,11 @@
+import { Button } from '@mui/material'
 import {
-  redirect,
   type LoaderFunctionArgs,
   type MetaFunction,
 } from '@remix-run/node'
-import { getCookie } from '~/common/auto-loader.server'
+import { useNavigate } from '@remix-run/react'
 import { GLOBALS } from '~/common/config/globals.config'
-import { CookieKeys, destroySession, getSession } from '~/common/cookie.server'
 import { SettingsLayout } from '~/layout/settings-layout/settings-layout.view'
-import { DeletedView } from '~/route-pages/success/success.view'
 
 export const meta: MetaFunction = () => {
   return [{ title: GLOBALS.name }]
@@ -26,6 +24,8 @@ function DeletedIndex() {
 }
 
 export const DeletedView = () => {
+  const navigate = useNavigate()
+
   return (
     <div className="text-center">
       <div className="text-xl sm:text-[1.75rem] leading-snug">
@@ -33,7 +33,7 @@ export const DeletedView = () => {
       </div>
 
       <p
-        className={`mt-2 ${!recentlyActivated ? 'mb-16 sm:mb-36' : ''} text-base sm:text-xl`}
+        className={`mt-2 mb-16 sm:mb-36 text-base sm:text-xl`}
       >
         All your personal data and account information have been permanently
         removed.

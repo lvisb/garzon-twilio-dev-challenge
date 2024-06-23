@@ -43,13 +43,17 @@ export const action: ActionFunction = async (remixArgs) => {
     excludeExtraneousValues: true,
   })
 
-  data.phone = rawData.phoneCountryCode + rawData.phone
+  if (rawData.phoneCountryCode != '+')
+    data.phone = rawData.phoneCountryCode + rawData.phone
+  else
+    data.phone = ''
+
   data.address = rawData.location
 
   const resultJson = await responseLoader(
     service.updateUser(data),
     remixArgs,
-    true,
+    false,
   )
 
   if (resultJson.status === 'error') {
@@ -64,6 +68,7 @@ export const action: ActionFunction = async (remixArgs) => {
       })
     }
   }
+  console.log('resultJson', resultJson)
 
   if (resultJson.status === 'ok' && resultJson.id === 'code_sent') {
     const session = await getSession(request.headers.get('Cookie'))
@@ -102,6 +107,7 @@ export const action: ActionFunction = async (remixArgs) => {
       },
     })
   }
+  console.log('resultJson', resultJson)
 
   return resultJson
 }
