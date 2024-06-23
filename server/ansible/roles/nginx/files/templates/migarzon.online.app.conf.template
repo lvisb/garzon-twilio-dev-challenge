@@ -54,6 +54,16 @@ server {
 			$request_uri
       =404;
 	}
+
+	# location for the backend api
+  location ~* ^/api/ {
+		include /etc/nginx/conf.d/proxy-headers.server.conf;
+
+		proxy_pass http://garzon_website_backend:${GARZON_BACKEND_PORT};
+
+		# keepalive
+		resolver 127.0.0.11;
+	}
   
 	# location for static files
 	location / {
@@ -65,17 +75,16 @@ server {
     # 1. tries to load static files in the /static_files/ folder
     # 2. forwards to the front-end server
 		try_files
-			$request_uri =404;
-      # @garzon_website_frontend;
+			$request_uri 
+      @garzon_website_frontend;
 	}
 
-	# location for the backend api
-  location ~* ^/api/ {
+	location @garzon_website_frontend {
 		include /etc/nginx/conf.d/proxy-headers.server.conf;
 
-		proxy_pass http://garzon_website_backend:${GARZON_BACKEND_PORT};
+		proxy_pass http://garzon_website_frontend:${GARZON_FRONTEND_PORT};
 
-		# keepalive
+    # keepalive
 		resolver 127.0.0.11;
 	}
 }
