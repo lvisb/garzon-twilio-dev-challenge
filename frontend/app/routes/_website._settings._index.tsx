@@ -15,7 +15,7 @@ import {
 } from '~/common/cookie.server'
 import { CodeDto } from '~/route-pages/home/dto/code.dto'
 import { HomeView } from '~/route-pages/home/home.view'
-import { HomeApiServer } from '~/route-pages/home/services/home.service'
+import { HomeApiServer } from '~/route-pages/home/services/home.server'
 import { responseLoader } from '~/services/api.server'
 
 export const loader = async (remixArgs: LoaderFunctionArgs) => {
@@ -32,6 +32,7 @@ export const loader = async (remixArgs: LoaderFunctionArgs) => {
       { code: url.searchParams.get('code') },
       { excludeExtraneousValues: true },
     )
+
     json = await responseLoader(service.connect(dto), remixArgs, false)
 
     if (json.status === 'ok') {

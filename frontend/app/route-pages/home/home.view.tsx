@@ -1,25 +1,23 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material'
+import { Box } from '@mui/material'
 import { SignIn } from './views/sign-in/sign-in.view'
 import { useLoaderData } from '@remix-run/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
+import { useGlobalDialogStore } from '~/common/global-dialog.store'
 
 export const HomeView = () => {
-  const [dialogOpen, setDialogOpen] = useState(false)
   const { json } = useLoaderData() as any
+
+  const { openDialog } = useGlobalDialogStore((state) => {
+    return state
+  })
 
   useEffect(() => {
     if (json.status !== 'error') return
 
-    setDialogOpen(true)
-  }, [json])
+    openDialog(json.message)
+
+    return
+  }, [json, openDialog])
 
   return (
     <>
@@ -60,26 +58,6 @@ export const HomeView = () => {
         <SignInButton color="secondary">Demo Account</SignInButton>**/}
         </Box>
       </div>
-
-      {dialogOpen && (
-        <Dialog open={true} onClose={() => {}}>
-          <DialogTitle>An error occurred</DialogTitle>
-
-          <DialogContent dividers>
-            <DialogContentText color="black">{json.message}</DialogContentText>
-          </DialogContent>
-
-          <DialogActions>
-            <Button
-              type="button"
-              variant="outlined"
-              onClick={() => setDialogOpen(false)}
-            >
-              Ok
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
     </>
   )
 }

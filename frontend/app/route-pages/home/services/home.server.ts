@@ -5,7 +5,6 @@ import { CodeDto } from '../dto/code.dto'
 
 export class HomeApiServer extends APIServer {
   constructor() {
-    console.log(envServer())
     super({
       baseURL: `${envServer().WEBSITE_API_BASE_URL}/api`,
     })

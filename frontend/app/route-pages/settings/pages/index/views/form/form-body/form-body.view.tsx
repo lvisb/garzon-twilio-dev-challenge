@@ -3,12 +3,17 @@ import {
   Checkbox,
   FormHelperText,
   MenuItem,
-  Select,
-  TextField,
+  Select as MuiSelect,
+  TextField as MuiTextField,
 } from '@mui/material'
 import { FormItem } from './form-item/form-item.view'
 import { Divider } from '../../divider/divider.view'
 import { useEffect, useState } from 'react'
+import { TextField } from '~/components/text-field.view'
+import { Select } from '~/components/select.view'
+import { zodiacOptions } from '../../../data/zodiac-options.data'
+import { SelectSingle } from '~/components/select-single.view'
+import { timezones } from '../../../data/timezone.data'
 
 type Place = {
   label: string
@@ -50,38 +55,32 @@ export const FormBody = () => {
 
   return (
     <div className="grid gap-4">
-      <FormItem label="Name" labelFor="nameField" required>
-        <TextField type="text" id="nameField" fullWidth />
-      </FormItem>
+      <TextField label="Name" fieldName="name" required />
 
-      <FormItem label="Email" labelFor="emailField" required>
-        <TextField type="text" id="emailField" inputMode="email" fullWidth />
-      </FormItem>
+      <TextField
+        label="Email"
+        fieldName="email"
+        inputMode="email"
+        forceDisable={true}
+        required
+      />
 
-      <FormItem label="Zodiac Sign" labelFor="zodiacSignField">
-        <Select id="zodiacSignField" fullWidth>
-          <MenuItem>Select</MenuItem>
-          <MenuItem value="lorem">Lorem</MenuItem>
-          <MenuItem value="ipsum">Ipsum</MenuItem>
-        </Select>
-      </FormItem>
+      <Select
+        label="Zodiac Sign"
+        fieldName="zodiacSign"
+        options={zodiacOptions}
+      ></Select>
 
-      <FormItem label="Timezone" labelFor="timezoneField" required>
-        <Autocomplete
-          id="timezoneField"
-          renderInput={(params) => <TextField {...params} fullWidth />}
-          options={[
-            {
-              label: 'America/Chicago',
-            },
-            {
-              label: 'America/Sao_Paulo',
-            },
-          ]}
-          disablePortal
-          fullWidth
-        />
-      </FormItem>
+      <SelectSingle
+        label="Timezone"
+        fieldName="timezone"
+        options={timezones.map((value: string) => ({
+          label: value,
+          value,
+          firstLetter: value[0].toUpperCase(),
+        }))}
+        required={true}
+      />
 
       <FormItem label="Location" labelFor="locationField">
         <Autocomplete
@@ -89,7 +88,7 @@ export const FormBody = () => {
           filterOptions={(x) => x}
           noOptionsText="No locations"
           options={locationOptions}
-          renderInput={(params) => <TextField {...params} fullWidth />}
+          renderInput={(params) => <MuiTextField {...params} fullWidth />}
           onChange={(event: any, newValue: Place | null) => {
             setLocationOptions(
               newValue ? [newValue, ...locationOptions] : locationOptions,
@@ -132,9 +131,8 @@ export const FormBody = () => {
             </label>
 
             <TextField
-              type="text"
-              id="phoneCountryCodeField"
               inputMode="decimal"
+              fieldName="phoneCountryCode"
               fullWidth
             />
           </div>
@@ -144,12 +142,7 @@ export const FormBody = () => {
               Phone number
             </label>
 
-            <TextField
-              type="text"
-              id="phoneNumberField"
-              inputMode="decimal"
-              fullWidth
-            />
+            <TextField fieldName="phoneNumber" inputMode="decimal" fullWidth />
           </div>
         </div>
       </FormItem>
