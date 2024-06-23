@@ -7,7 +7,6 @@ export const FormFooter = () => {
   const { userJson } = useLoaderData() as any
   const { state } = useNavigation()
   const loading = state !== 'idle'
-  console.log(userJson)
 
   return (
     <div className="py-6">
