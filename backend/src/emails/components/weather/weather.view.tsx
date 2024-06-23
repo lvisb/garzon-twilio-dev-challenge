@@ -7,6 +7,10 @@ export type WeatherProps = {
 }
 
 export const Weather = ({ assetsUrl, data }: WeatherProps) => {
+  if (!data) {
+    return null
+  }
+
   return (
     <Section>
       <Row>

@@ -56,5 +56,6 @@ export class UpdateUserDto {
 
   @Expose()
   @IsIn(zodiacValues, { message: invalidField })
+  @IsOptional()
   zodiacSign: string
 }

@@ -19,42 +19,55 @@ type EmailProps = {
   eventsJson: DailySummary.Events.Json
   horoscopeJson: DailySummary.Horoscope.Json
   name: string
+  production?: boolean
 }
 
 const Email = ({
-  assetsUrl = '/static',
-  appTitle = 'App Name',
-  appUrl = 'http://localhost',
-  timezone = 'UTC',
-  weatherJson = {
-    icon: 'sun',
-    summary: 'Nam libero justo laoreet sit.',
-  },
-  eventsJson = {
-    events: [
-      {
-        title: 'Event 1',
-        startDate: '2021-01-01T10:00:00Z',
-        endDate: '2021-01-01T11:00:00Z',
-      },
-      {
-        title: 'Event 2',
-        startDate: '2021-01-01T17:00:00Z',
-        endDate: '2021-01-02T17:00:00Z',
-      },
-    ],
-    summary:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    motivational_quote:
-      'Urna molestie at elementum eu. Enim blandit volutpat maecenas volutpat blandit aliquam. Venenatis cras sed felis eget velit aliquet sagittis id consectetur. ',
-  },
-  horoscopeJson = {
-    zodiacSign: 'capricorn',
-    summary:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus.',
-  },
-  name = 'Lorem Ipsum Dolor',
+  assetsUrl,
+  appTitle,
+  appUrl,
+  timezone,
+  weatherJson,
+  eventsJson,
+  horoscopeJson,
+  name,
+  production,
 }: EmailProps) => {
+  if (!production) {
+    assetsUrl = '/static'
+    appTitle = 'App Name'
+    appUrl = 'http://localhost'
+    timezone = 'UTC'
+    weatherJson = {
+      icon: 'sun',
+      summary: 'Nam libero justo laoreet sit.',
+    }
+    eventsJson = {
+      events: [
+        {
+          title: 'Event 1',
+          startDate: '2021-01-01T10:00:00Z',
+          endDate: '2021-01-01T11:00:00Z',
+        },
+        {
+          title: 'Event 2',
+          startDate: '2021-01-01T17:00:00Z',
+          endDate: '2021-01-02T17:00:00Z',
+        },
+      ],
+      summary:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      motivational_quote:
+        'Urna molestie at elementum eu. Enim blandit volutpat maecenas volutpat blandit aliquam. Venenatis cras sed felis eget velit aliquet sagittis id consectetur. ',
+    }
+    horoscopeJson = {
+      zodiacSign: 'capricorn',
+      summary:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Fermentum iaculis eu non diam phasellus vestibulum lorem sed risus.',
+    }
+    name = 'Lorem Ipsum Dolor'
+  }
+
   const date = toZonedTime(new Date(), timezone)
 
   return (

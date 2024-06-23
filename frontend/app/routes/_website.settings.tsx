@@ -68,7 +68,6 @@ export const action: ActionFunction = async (remixArgs) => {
       })
     }
   }
-  console.log('resultJson', resultJson)
 
   if (resultJson.status === 'ok' && resultJson.id === 'code_sent') {
     const session = await getSession(request.headers.get('Cookie'))
@@ -107,7 +106,6 @@ export const action: ActionFunction = async (remixArgs) => {
       },
     })
   }
-  console.log('resultJson', resultJson)
 
   return resultJson
 }

@@ -7,6 +7,8 @@ export type ZodiacProps = {
 }
 
 export const Zodiac = ({ assetsUrl, data }: ZodiacProps) => {
+  if (!data) return null
+
   const zodiacSign =
     data.zodiacSign.at(0).toUpperCase() + data.zodiacSign.slice(1)
 

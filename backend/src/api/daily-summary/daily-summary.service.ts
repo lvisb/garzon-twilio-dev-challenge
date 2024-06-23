@@ -195,6 +195,7 @@ export class DailySummaryService {
         appUrl: this.envService.getValue('GARZON_EXTERNAL_ADDRESS'),
         appTitle: 'Gárzon',
         timezone: user.timezone,
+        production: true,
       }),
     )
 
