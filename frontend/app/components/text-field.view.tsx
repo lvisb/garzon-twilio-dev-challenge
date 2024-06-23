@@ -1,4 +1,4 @@
-import type { FilledInputProps, InputLabelProps } from '@mui/material'
+import type { FilledInputProps, InputLabelProps, SxProps, Theme } from '@mui/material'
 import type { ChangeEvent } from 'react'
 
 import { TextField as MuiTextField, useTheme } from '@mui/material'
@@ -27,6 +27,8 @@ export const TextField = ({
   absoluteHelperText = false,
   type = 'text',
   forceDisable = false,
+  sx,
+  onInput,
 }: TextFieldProps) => {
   const { containErrors, errorMessage, isPending, register } =
     useFormField(fieldName!)
@@ -62,6 +64,7 @@ export const TextField = ({
       minRows={minRows}
       maxRows={maxRows}
       multiline={multiline}
+      onInput={onInput}
       onKeyDown={onKeyDown}
       onChange={(event) => {
         fieldRegister.onChange(event)
@@ -89,6 +92,7 @@ export const TextField = ({
               bottom: '-1.2rem',
             }
           : {},
+        ...sx
       }}
     />
   )
@@ -103,6 +107,7 @@ export interface TextFieldProps extends FormComponent {
   readOnly?: boolean
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: (event: ChangeEvent<HTMLInputElement>) => void
+  onInput?: (event: ChangeEvent<HTMLInputElement>) => void
   onBlur?: (event: ChangeEvent<HTMLInputElement>) => void
   multiline?: boolean
   maxRows?: number
@@ -119,4 +124,5 @@ export interface TextFieldProps extends FormComponent {
     | 'decimal'
     | 'search'
     | undefined
+  sx?: SxProps<Theme>
 }

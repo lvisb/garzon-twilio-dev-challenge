@@ -42,4 +42,7 @@ export const readCookieSettings = async (remixArgs: LoaderFunctionArgs) => {
 export enum CookieKeys {
   token = 'token',
   expireDate = 'expireDate',
+  newPhone = 'newPhone',
+  codeVerified = 'codeVerified',
+  recentlyActivated = 'recentlyActivated',
 }

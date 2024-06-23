@@ -1,4 +1,10 @@
-import { Form as RemixForm, useActionData, useLoaderData, useSubmit } from '@remix-run/react'
+import {
+  Form as RemixForm,
+  useActionData,
+  useLoaderData,
+  useNavigate,
+  useSubmit,
+} from '@remix-run/react'
 import { FormBody } from './form-body/form-body.view'
 import { FormFooter } from './form-footer/form-footer.view'
 import { handleFormSubmit } from '~/common/utils/handle-form-submit.util'
@@ -6,16 +12,42 @@ import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { z as zod } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFormFeedback } from '~/common/hooks/use-form-feedback.hook'
+import glpn from 'google-libphonenumber'
+import { useEffect } from 'react'
+
+const phoneUtil = glpn.PhoneNumberUtil.getInstance()
 
 export const Form = () => {
-  const {  userJson } = useLoaderData() as any
+  const { userJson } = useLoaderData() as any
 
-  console.log('userJson', userJson)
+  let defaultValues: any = {}
+
+  if (userJson.user) {
+    defaultValues = {
+      name: userJson.user.name,
+      email: userJson.user.email,
+      location: userJson.user.settings.address,
+      latitude: userJson.user.settings.latitude,
+      longitude: userJson.user.settings.longitude,
+      zodiacSign: userJson.user.settings.zodiacSign,
+      timezone: userJson.user.timezone,
+      phoneActive: userJson.user.phoneActive,
+    }
+
+    if (userJson.user.phone) {
+      const phone = phoneUtil.parseAndKeepRawInput(userJson.user.phone)
+      const countryCode = `+${phone.getCountryCode()}`
+      const nationalNumber = phone.getNationalNumber()
+
+      defaultValues.phoneCountryCode = countryCode
+      defaultValues.phone = nationalNumber
+    } else defaultValues.phoneCountryCode = '+'
+  }
 
   const form = useForm({
     mode: 'all',
     resolver: zodResolver(formValidation),
-    defaultValues: userJson?.user || {}
+    defaultValues,
   })
 
   return (
@@ -30,9 +62,21 @@ const SettingsForm = () => {
   const formContext = useFormContext()
   const submit = useSubmit()
 
+  const { codeVerified } = useLoaderData() as any
+  const navigate = useNavigate()
+
   const METHOD = 'POST'
 
   useFormFeedback(actionData)
+
+  useEffect(() => {
+    console.log('codeVerified', codeVerified)
+    if (codeVerified) {
+      navigate({ search: '' }, { replace: true })
+
+      handleFormSubmit({ formContext, submit, method: METHOD })
+    }
+  }, [codeVerified])
 
   return (
     <RemixForm
@@ -50,6 +94,5 @@ const SettingsForm = () => {
 export const formValidation = zod.object({
   name: zod.string().min(1),
   email: zod.string().email(),
-  phone: zod.string().min(1),
   timezone: zod.string().min(1),
 })

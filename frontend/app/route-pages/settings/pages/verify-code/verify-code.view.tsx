@@ -1,7 +1,7 @@
 import { HighlightOff as CloseIcon } from '@mui/icons-material'
 import { Dialog, IconButton } from '@mui/material'
-import { Form } from './views/form/form.view'
 import { useNavigate } from '@remix-run/react'
+import { Form } from './views/form/form.view'
 
 export const SettingsVerifyCodeView = () => {
   const navigate = useNavigate()

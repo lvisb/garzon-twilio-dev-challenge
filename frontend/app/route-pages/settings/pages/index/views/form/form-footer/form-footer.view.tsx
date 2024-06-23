@@ -19,7 +19,8 @@ export const FormFooter = () => {
         </div>
 
         <div className="sm:shrink-0 sm:order-first">
-          <Button
+          <LoadingButton
+            disabled={loading}
             type="button"
             variant="outlined"
             color="error"
@@ -28,7 +29,7 @@ export const FormFooter = () => {
             fullWidth
           >
             Cancel
-          </Button>
+          </LoadingButton>
         </div>
       </div>
 
