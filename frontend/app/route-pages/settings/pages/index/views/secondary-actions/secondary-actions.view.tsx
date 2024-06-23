@@ -1,18 +1,9 @@
 import { Button, Link } from '@mui/material'
-import { Link as RemixLink } from '@remix-run/react'
-import { DeleteConfirmationDialog } from './delete-confirmation-dialog/delete-confirmation-dialog.view'
+import { Link as RemixLink, useNavigate } from '@remix-run/react'
 import { useState } from 'react'
 
 export const SecondaryActions = () => {
-  const [dialogOpen, setDialogOpen] = useState(false)
-
-  const openDialog = () => {
-    setDialogOpen(true)
-  }
-
-  const closeDialog = () => {
-    setDialogOpen(false)
-  }
+  const navigate = useNavigate()
 
   return (
     <>
@@ -38,13 +29,13 @@ export const SecondaryActions = () => {
           color="error"
           size="small"
           sx={{ textTransform: 'lowercase', fontSize: 12 }}
-          onClick={openDialog}
+          onClick={() => {
+            navigate('/settings/delete-account')
+          }}
         >
           Delete my account
         </Button>
       </div>
-
-      <DeleteConfirmationDialog open={dialogOpen} onClose={closeDialog} />
     </>
   )
 }

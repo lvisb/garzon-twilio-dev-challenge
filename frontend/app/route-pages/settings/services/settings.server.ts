@@ -21,4 +21,8 @@ export class SettingsApiServer extends APIServer {
   verifyCode(code: string, phone: string) {
     return this.request.patch(`/user/verify-code`, { code, phone })
   }
+
+  deleteAccount() {
+    return this.request.delete(`/user`)
+  }
 }
