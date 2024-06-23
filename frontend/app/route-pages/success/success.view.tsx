@@ -16,14 +16,18 @@ export const SuccessView = () => {
         <p>You’re all set to receive daily updates.</p>
       </div>
 
-      <p className={`mt-2 ${!recentlyActivated ? 'mb-16 sm:mb-36' : ''} text-base sm:text-xl`}>
-        The email is sent out at 6 AM.
+      <p
+        className={`mt-2 ${!recentlyActivated ? 'mb-16 sm:mb-36' : ''} text-base sm:text-xl`}
+      >
+        The daily summary is sent out around 6 AM.
       </p>
 
       {recentlyActivated && (
         <p className="mt-6 mb-16 sm:mb-36 text-base sm:text-xl">
-          <em>Since you have just activated your subscription, we will send you an
-          email immediately so you can review today's summary. :)</em>{' '}
+          <em>
+            Since you have just activated your subscription, I will send you an
+            email immediately so you can review today's summary. :)
+          </em>
         </p>
       )}
 

@@ -18,6 +18,7 @@ import DailySummaryEmail from '#emails/templates/daily-summary.js'
 import { EnvService } from '#env/env.service.js'
 import { SendGridService } from '#twilio/sendgrid/sendgrid.service.js'
 import { toZonedTime } from 'date-fns-tz'
+import { MessagingService } from '#twilio/messaging/messaging.service.js'
 
 @Injectable()
 export class DailySummaryService {
@@ -29,6 +30,7 @@ export class DailySummaryService {
     private readonly astrologyService: AstrologyService,
     private readonly envService: EnvService,
     private readonly sendGridService: SendGridService,
+    private readonly messagingService: MessagingService,
   ) {}
 
   async events(user: User): Promise<DailySummary.Events.Json | undefined> {
@@ -142,6 +144,26 @@ export class DailySummaryService {
     }
   }
 
+  async smsSummary(
+    smsTitle: string,
+    fullContent: string,
+  ): Promise<DailySummary.SmsSummary.Json> {
+    try {
+      const prompt = await this.openaiService.smsSummaryPrompt(
+        smsTitle,
+        fullContent,
+      )
+
+      const messageJson = JSON.parse(prompt.choices[0].message.content)
+
+      return messageJson
+    } catch (error) {
+      console.error('horoscope', error)
+
+      return undefined
+    }
+  }
+
   createSendHistory(user: User) {
     const sendHistory = new SendHistory()
 
@@ -191,6 +213,28 @@ export class DailySummaryService {
       const weatherJson = results[1]
       const horoscopeJson = results[2]
 
+      let smsSummaryJson: DailySummary.SmsSummary.Json
+      let smsTitle = ''
+      let exampleSmsTitle = ''
+
+      if (user.phoneActive) {
+        let smsFullContent = ''
+
+        if (eventsJson) smsFullContent += `Events:\n${eventsJson.summary}\n\n`
+
+        if (weatherJson)
+          smsFullContent += `Weather:\n${weatherJson.summary}\n\n`
+
+        if (horoscopeJson)
+          smsFullContent += `Horoscope:\n${horoscopeJson.summary}\n\n`
+
+        smsTitle = `Garzon, ${format(toZonedTime(new Date(), user.timezone), 'MMMM dd')}:`
+
+        exampleSmsTitle = `Sent from your Twilio trial account ${smsTitle}`
+
+        smsSummaryJson = await this.smsSummary(exampleSmsTitle, smsFullContent)
+      }
+
       const emailHtml = this.renderEmail({
         user,
         eventsJson,
@@ -207,6 +251,12 @@ export class DailySummaryService {
           `Garzón - ${format(toZonedTime(new Date(), user.timezone), 'MMMM dd')} - Daily Summary`,
           emailHtml,
         )
+
+        if (smsSummaryJson)
+          await this.messagingService.sendMessage(
+            user.phone,
+            `${smsTitle} ${smsSummaryJson.summary}`,
+          )
       } catch (error) {
         sendHistory.completedAt = new Date()
         sendHistory.status = 'failed'

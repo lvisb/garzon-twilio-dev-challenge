@@ -85,6 +85,10 @@ export class Env {
 
   @Expose()
   @IsDefined()
+  TWILIO_PHONE_NUMBER: string
+
+  @Expose()
+  @IsDefined()
   GARZON_EXTERNAL_ADDRESS: string
 
   @Expose()

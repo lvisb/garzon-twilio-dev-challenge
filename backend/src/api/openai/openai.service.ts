@@ -119,4 +119,34 @@ Instructions:
 
     return chatCompletion
   }
+
+  async smsSummaryPrompt(smsTitle: string, content: string) {
+
+    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      {
+        role: 'system',
+        content: `
+You are an assistant who will summarize content in JSON format for sending via SMS.
+
+Instructions:
+
+1. Receive the user's entire daily summary.
+2. Summarize the text into something very brief, with a maximum of ${320 - smsTitle.length} characters.
+3. Present this summary in JSON under the key summary.
+`,
+      },
+      {
+        role: 'user',
+        content: `Here is my daily content:\n${content}`,
+      },
+    ]
+
+    const chatCompletion = await this.openai.chat.completions.create({
+      response_format: { type: 'json_object' },
+      model: 'gpt-3.5-turbo',
+      messages,
+    })
+
+    return chatCompletion
+  }
 }

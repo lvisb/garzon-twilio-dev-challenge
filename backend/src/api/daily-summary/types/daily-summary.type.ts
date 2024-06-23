@@ -34,4 +34,10 @@ export namespace DailySummary {
       summary: string
     }
   }
+
+  export namespace SmsSummary {
+    export interface Json {
+      summary: string
+    }
+  }
 }
