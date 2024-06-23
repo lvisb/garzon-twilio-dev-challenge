@@ -4,6 +4,7 @@ import { invalidField } from '#i18n/i18n.config.js'
 import { Expose, Type } from 'class-transformer'
 import {
   IsBoolean,
+  IsBooleanString,
   IsIn,
   IsLatitude,
   IsLongitude,

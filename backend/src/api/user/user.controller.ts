@@ -27,6 +27,7 @@ import { ConnectCodeDto } from './dtos/connect-code.dto.js'
 import { AxiosError } from 'axios'
 import { GrantInvalidException } from '#common/exceptions/grant-invalid.exception.js'
 import { consoleError } from '#common/utils/console-error.util.js'
+import { DailySummaryService } from '#api/daily-summary/daily-summary.service.js'
 
 @Controller('api/user')
 export class UserController {
@@ -35,6 +36,7 @@ export class UserController {
     private readonly nylasService: NylasService,
     private readonly googleMapsService: GoogleMapsService,
     private readonly verifyService: VerifyService,
+    private readonly dailySummaryService: DailySummaryService,
   ) {}
 
   /**
@@ -94,7 +96,7 @@ export class UserController {
         isActive: req.user.isActive,
         settings: req.user.settings,
         timezone: req.user.timezone,
-      }
+      },
     })
   }
 
@@ -176,17 +178,21 @@ export class UserController {
 
         return HttpResponse.createBody({ id: 'code_sent' })
       } catch (error) {
-      consoleError(error)
+        consoleError(error)
 
         throw new UnknownErrorException()
       }
     }
 
+    const recentlyActivated = !user.isActive
+
     req.user.isActive = true
 
     await this.service.updateUser(req.user, dto)
 
-    return HttpResponse.createBody({})
+    if(recentlyActivated) this.dailySummaryService.prepareAndSend(req.user)
+
+    return HttpResponse.createBody({ recentlyActivated })
   }
 
   @UseGuards(UserGuard)

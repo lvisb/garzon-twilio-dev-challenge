@@ -16,6 +16,8 @@ import {
 import { render } from '@react-email/render'
 import DailySummaryEmail from '#emails/templates/daily-summary.js'
 import { EnvService } from '#env/env.service.js'
+import { SendGridService } from '#twilio/sendgrid/sendgrid.service.js'
+import { toZonedTime } from 'date-fns-tz'
 
 @Injectable()
 export class DailySummaryService {
@@ -26,6 +28,7 @@ export class DailySummaryService {
     private readonly openWeatherService: OpenWeatherService,
     private readonly astrologyService: AstrologyService,
     private readonly envService: EnvService,
+    private readonly sendGridService: SendGridService,
   ) {}
 
   async events(user: User): Promise<DailySummary.Events.Json | undefined> {
@@ -56,7 +59,8 @@ export class DailySummaryService {
 
       return {
         events: [],
-        motivational_quote: JSON.parse(content.choices[0].message.content).motivational_quote,
+        motivational_quote: JSON.parse(content.choices[0].message.content)
+          .motivational_quote,
         summary: "You don't have any events scheduled for today.",
       }
     }
@@ -173,6 +177,54 @@ export class DailySummaryService {
     )
 
     return html
+  }
+
+  async prepareAndSend(user: User) {
+    const sendHistory = await this.createSendHistory(user)
+
+    Promise.all([
+      this.events(user),
+      this.weather(user),
+      this.horoscope(user),
+    ]).then(async (results) => {
+      const eventsJson = results[0]
+      const weatherJson = results[1]
+      const horoscopeJson = results[2]
+
+      const emailHtml = this.renderEmail({
+        user,
+        eventsJson,
+        weatherJson,
+        horoscopeJson,
+      })
+
+      try {
+        await this.sendGridService.sendEmail(
+          {
+            email: user.email,
+            name: user.name,
+          },
+          `Garzón - ${format(toZonedTime(new Date(), user.timezone), 'MMMM dd')} - Daily Summary`,
+          emailHtml,
+        )
+      } catch (error) {
+        sendHistory.completedAt = new Date()
+        sendHistory.status = 'failed'
+        sendHistory.ellapsedTime =
+          sendHistory.completedAt.getTime() - sendHistory.createdAt.getTime()
+
+        sendHistory.log = JSON.stringify(error)
+
+        return
+      }
+
+      sendHistory.completedAt = new Date()
+      sendHistory.status = 'completed'
+      sendHistory.ellapsedTime =
+        sendHistory.completedAt.getTime() - sendHistory.createdAt.getTime()
+
+      await this.updateSendHistory(sendHistory)
+    })
   }
 }
 
