@@ -81,6 +81,23 @@ export class UserController {
       throw new UnknownErrorException()
     }
   }
+
+  @UseGuards(UserGuard)
+  @Get()
+  async getUser(@Req() req: SignedInRequest) {
+    return HttpResponse.createBody({
+      user: {
+        name: req.user.name,
+        email: req.user.email,
+        phone: req.user.phone,
+        phoneActive: req.user.phoneActive,
+        isActive: req.user.isActive,
+        settings: req.user.settings,
+        timezone: req.user.timezone,
+      }
+    })
+  }
+
   /**
    * Endpoint to retrieve addresses with latitude and longitude in live search.
    * Used when the user starts filling in the address.
