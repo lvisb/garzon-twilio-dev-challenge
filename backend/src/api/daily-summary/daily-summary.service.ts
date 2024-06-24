@@ -218,23 +218,24 @@ export class DailySummaryService {
       let smsTitle = ''
       let exampleSmsTitle = ''
 
-      if (user.phoneActive) {
-        let smsFullContent = ''
-
-        if (eventsJson) smsFullContent += `Events:\n${eventsJson.summary}\n\n`
-
-        if (weatherJson)
-          smsFullContent += `Weather:\n${weatherJson.summary}\n\n`
-
-        if (horoscopeJson)
-          smsFullContent += `Horoscope:\n${horoscopeJson.summary}\n\n`
-
-        smsTitle = `Garzon, ${format(toZonedTime(new Date(), user.timezone), 'MMMM dd')}:`
-
-        exampleSmsTitle = `Sent from your Twilio trial account ${smsTitle}`
-
-        smsSummaryJson = await this.smsSummary(exampleSmsTitle, smsFullContent)
-      }
+      // disabled cant send sms on sandbox
+      // if (user.phoneActive) {
+      //   let smsFullContent = ''
+      //
+      //   if (eventsJson) smsFullContent += `Events:\n${eventsJson.summary}\n\n`
+      //
+      //   if (weatherJson)
+      //     smsFullContent += `Weather:\n${weatherJson.summary}\n\n`
+      //
+      //   if (horoscopeJson)
+      //     smsFullContent += `Horoscope:\n${horoscopeJson.summary}\n\n`
+      //
+      //   smsTitle = `Garzon, ${format(toZonedTime(new Date(), user.timezone), 'MMMM dd')}:`
+      //
+      //   exampleSmsTitle = `Sent from your Twilio trial account ${smsTitle}`
+      //
+      //   smsSummaryJson = await this.smsSummary(exampleSmsTitle, smsFullContent)
+      // }
 
       const emailHtml = this.renderEmail({
         user,
@@ -253,11 +254,12 @@ export class DailySummaryService {
           emailHtml,
         )
 
-        if (smsSummaryJson)
-          await this.messagingService.sendMessage(
-            user.phone,
-            `${smsTitle} ${smsSummaryJson.summary}`,
-          )
+        // disabled cant send sms on sandbox
+        // if (user.phoneActive && smsSummaryJson)
+        //   await this.messagingService.sendMessage(
+        //     user.phone,
+        //     `${smsTitle} ${smsSummaryJson.summary}`,
+        //   )
       } catch (error) {
         sendHistory.completedAt = new Date()
         sendHistory.status = 'failed'

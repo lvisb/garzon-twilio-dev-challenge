@@ -176,17 +176,18 @@ export class UserController {
   async updateUser(@Req() req: SignedInRequest, @Body() dto: UpdateUserDto) {
     const user = req.user
 
-    if (dto.phone && user.phone !== dto.phone) {
-      try {
-        await this.verifyService.sendCode(dto.phone)
-
-        return HttpResponse.createBody({ id: 'code_sent' })
-      } catch (error) {
-        consoleError(error)
-
-        throw new UnknownErrorException()
-      }
-    }
+    // if (dto.phone && user.phone !== dto.phone) {
+    //   try {
+    //     // disabled: cant send when in twilio sandbox
+    //     await this.verifyService.sendCode(dto.phone)
+    //
+    //     return HttpResponse.createBody({ id: 'code_sent' })
+    //   } catch (error) {
+    //     consoleError(error)
+    //
+    //     // throw new UnknownErrorException()
+    //   }
+    // }
 
     const recentlyActivated = !user.isActive
 
